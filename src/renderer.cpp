@@ -7,25 +7,39 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <SDL2/SDL_image.h>
+#include "entity.h"
+extern bool closing;
 
 namespace Renderer {
-    Renderer::Renderer(float CameraX, float CameraY, float CameraZ, int screenWidth, int screenHeight, int maxFPS) {
+    Renderer::Renderer(float CameraX, float CameraY, float CameraZ, int screenWidth, int screenHeight, int maxFPS)
+    : screenWidth(screenWidth), screenHeight(screenHeight) {
         camera.x = CameraX;
         camera.y = CameraY;
         camera.z = CameraZ;
-        this->screenWidth = screenWidth;
-        this->screenHeight = screenHeight;
         setMaxFPS(maxFPS);
-    }
-    void Renderer::init() {
-        SDL_GetRendererOutputSize(renderer, &screenWidth, &screenHeight); //Try to get current screen rez
+
+        // Initialize SDL and create window/renderer
         SDL_Init(SDL_INIT_VIDEO);
         SDL_CreateWindowAndRenderer(screenWidth, screenHeight, 0, &window, &renderer);
         SDL_RenderSetScale(renderer, 1, 1);
         SDL_SetWindowTitle(window, "Tunnel Flag");
+
+
+        // Load player texture
+        SDL_Texture* texture = IMG_LoadTexture(renderer, "../textures/player.png"); //TODO: fix relative dirs.
+        if (!texture) {
+            std::cerr << "Failed to load player texture: " << SDL_GetError() << std::endl;
+            // Handle error
+        }
+
+        player1 = Entity(texture, 100, 100, 50, 50);
+    }
+    void Renderer::init() {
+
     }
 
-    void Renderer::destroy() const {
+    Renderer::~Renderer() {
         std::cout << "Quitting SDL\n";
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -39,6 +53,9 @@ namespace Renderer {
 
         clearScreen();
         // Draw some shit idk
+
+        player1.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
+
         showScreen();
         auto endTime = std::chrono::high_resolution_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
@@ -77,4 +94,17 @@ namespace Renderer {
     int Renderer::getResolutionx() const {return screenWidth;}
     int Renderer::getResolutiony() const {return screenHeight;}
     int Renderer::getMaxFPS() const {return maxFPS;}
+
+
+    void Renderer::zoomIn() {
+        if (camera.z * 0.9 >= zoomMin) {
+            camera.z *= 0.9;
+        }
+    }
+
+    void Renderer::zoomOut() {
+        if (camera.z * 1.11111 <= zoomMax) {
+            camera.z *= 1.11111;
+        }
+    }
 };

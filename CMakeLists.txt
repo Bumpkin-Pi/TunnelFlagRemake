@@ -8,7 +8,12 @@ find_package(SDL2 REQUIRED)
 
 # Include SDL2 headers
 include_directories(${SDL2_INCLUDE_DIRS})
-include_directories(src)
+
+# Find SDL_image package
+set(SDL2_IMAGE_LIBRARIES "/lib/libSDL2_image.so") # I dont know why cmake is incapable of finding SDL2_image on its own, but at this point I'm too fed up to bother trying to find out.
+
+# Include SDL_image headers
+include_directories(${SDL2_IMAGE_LIBRARY_PATH})
 
 # Set the source files
 set(SOURCE_FILES
@@ -17,8 +22,10 @@ set(SOURCE_FILES
         src/keyboard.h
         src/renderer.cpp
         src/renderer.h
+        src/entity.cpp
+        src/entity.h
 )
 
-# Add the executable and link with SDL2 library
+# Add the executable and link with SDL2 and SDL_image libraries
 add_executable(TunnelFlagRemake ${SOURCE_FILES})
-target_link_libraries(TunnelFlagRemake ${SDL2_LIBRARIES})
+target_link_libraries(TunnelFlagRemake ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
