@@ -7,7 +7,6 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include <SDL2/SDL_image.h>
 #include "entity.h"
 extern bool closing;
 
@@ -27,7 +26,7 @@ namespace Renderer {
 
 
         // Load player texture
-        SDL_Texture* texture = IMG_LoadTexture(renderer, "../textures/player.png"); //TODO: fix relative dirs.
+        SDL_Texture* texture = IMG_LoadTexture(renderer, "../textures/player1.png"); //TODO: fix relative dirs.
         if (!texture) {
             std::cerr << "Failed to load player texture: " << SDL_GetError() << std::endl;
             // Handle error

@@ -24,6 +24,10 @@ set(SOURCE_FILES
         src/renderer.h
         src/entity.cpp
         src/entity.h
+        src/loadTextures.cpp
+        src/loadTextures.h
+        src/game.cpp
+        src/game.h
 )
 
 # Add the executable and link with SDL2 and SDL_image libraries
