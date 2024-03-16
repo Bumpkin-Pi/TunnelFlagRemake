@@ -41,10 +41,6 @@ set(SOURCE_FILES
 # Add the executable and link with SDL2 and SDL_image libraries
 add_executable(TunnelFlagRemake ${SOURCE_FILES})
 
-set_target_properties(TunnelFlagRemake PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
-
 if (WIN32)
     target_link_libraries(TunnelFlagRemake ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES}/SDL2_image.lib)
 else()
