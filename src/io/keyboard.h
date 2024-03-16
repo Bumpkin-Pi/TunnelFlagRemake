@@ -11,6 +11,7 @@
 
 namespace Keyboard {
 
+
     struct PlayerKeybinds {
         SDL_Scancode up = SDL_SCANCODE_W;
         SDL_Scancode down = SDL_SCANCODE_S;
@@ -20,6 +21,7 @@ namespace Keyboard {
 
     struct Keybinds {
         PlayerKeybinds playerKeybinds;
+        SDL_Scancode cameraToPlayer = SDL_SCANCODE_SPACE;
     };
 
     class KeyboardInput {

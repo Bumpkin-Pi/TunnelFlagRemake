@@ -55,9 +55,7 @@ SDL_Texture *Entity::getSprite() const {return sprite;}
 void Entity::setSprite(SDL_Texture *tex) {sprite = tex;}
 
 
-Player::Player(int team, float x, float y) : team(team) {
-    entity.setPos(x, y);
-}
+
 
 
 

@@ -11,22 +11,26 @@
 #include "../game/entity.h"
 
 namespace Renderer {
+    /*
+     * General renderer namespace, containing classes and structs required for drawing
+     */
+
     struct Camera {
         float x=0,y=0,z=1.0; //Z for zoom
     };
 
     class Renderer {
+        /*
+         * Handles all drawing to screen.
+         */
     private:
         Camera camera;
-        int screenWidth=0,screenHeight=0;
+        int screenWidth=0,screenHeight=0; // Screen resolution.
         int maxFPS = 60;
         int frameDelay = 1000 / maxFPS; // milliseconds per frame
-        float zoomMax = 10, zoomMin = 0.5;
+        float zoomMax = 10, zoomMin = 0.5; // Boundaries for how the camera zoom can be changed.
         std::chrono::high_resolution_clock::time_point HstartTime = std::chrono::high_resolution_clock::now(); //Time used for 100fps average calc
-        int frameCounter = 0;
-
-
-
+        int frameCounter = 0; // Indexes for ever frame rendered.
 
         void clearScreen();
         void showScreen();

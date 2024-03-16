@@ -40,6 +40,9 @@ void physicsThreadFunction() {
         if (keyboardInput.isKeyDown(keyboardInput.keybinds.playerKeybinds.left)) {renderer.player1.velocityX = -1; // Move left
         } else if (keyboardInput.isKeyDown(keyboardInput.keybinds.playerKeybinds.right)) {renderer.player1.velocityX = 1; // Move right
         } else {renderer.player1.velocityX = 0;} // No movement
+        if (keyboardInput.isKeyDown(keyboardInput.keybinds.cameraToPlayer)) {
+            renderer.setCameraPos(renderer.player1.getPosx(), renderer.player1.getPosy());
+        }
 
 
         // Update last frame time

@@ -9,6 +9,10 @@
 
 
 class Entity {
+    /*
+     * Generic entity class.
+     * Contains basic location and velocity data, as well as a texture pointer, and a drawing method to be called from the Renderer.
+     */
 private:
     float x,y;
     int width,height;
@@ -34,11 +38,6 @@ public:
 
 };
 
-class Player {
-    int team;
-public:
-    Entity entity{nullptr, 0, 0, 10, 10};
-    Player(int team, float x, float y);
-};
+
 
 #endif //ENTITY_H

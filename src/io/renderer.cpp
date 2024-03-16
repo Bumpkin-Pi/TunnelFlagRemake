@@ -25,7 +25,7 @@ namespace Renderer {
 
 
         // Load player texture
-        SDL_Texture* texture = IMG_LoadTexture(renderer, "../textures/player1.png"); //TODO: fix relative dirs.
+        SDL_Texture* texture = IMG_LoadTexture(renderer, "textures/player1.png"); //TODO: fix relative dirs.
         if (!texture) {
             std::cerr << "Failed to load player texture: " << SDL_GetError() << std::endl;
             // Handle error
