@@ -15,6 +15,7 @@ struct Textures {
 
 
 Textures LoadTextures(SDL_Renderer *renderer);
+Textures UnloadTextures(Textures textures);
 
 
 

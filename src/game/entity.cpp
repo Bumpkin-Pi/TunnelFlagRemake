@@ -49,16 +49,17 @@ void Entity::setPos(float x, float y) {
     this->x = x;
     this->y = y;
 }
+void Entity::setWidthAndHeight(int width, int height) {
+    this->width = width;
+    this->height = height;
+}
+
 float Entity::getPosx() const {return x;}
 float Entity::getPosy() const {return y;}
+int Entity::getHeight() {return height;}
+int Entity::getWidth() {return width;}
+
 SDL_Texture *Entity::getSprite() const {return sprite;}
 void Entity::setSprite(SDL_Texture *tex) {sprite = tex;}
-
-
-
-
-
-
-
 
 

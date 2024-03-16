@@ -3,11 +3,13 @@
 //
 
 #include "renderer.h"
+#include "../game/game.h"
 
 #include <iostream>
 #include <chrono>
 #include <thread>
 extern bool closing;
+extern Game game;
 
 namespace Renderer {
     Renderer::Renderer(float CameraX, float CameraY, float CameraZ, int screenWidth, int screenHeight, int maxFPS)
@@ -53,7 +55,7 @@ namespace Renderer {
         // Draw some shit idk
 
         player1.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
-
+        renderPlayers();
         showScreen();
         auto endTime = std::chrono::high_resolution_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
@@ -67,6 +69,13 @@ namespace Renderer {
         // }
     }
 
+    void Renderer::renderPlayers() {
+        for (auto& pair : game.playerMap) {
+            pair.second.entity.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
+        }
+    }
+
+
     void Renderer::clearScreen() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
@@ -76,6 +85,9 @@ namespace Renderer {
     }
 
 
+    // void Renderer::setPlayerMapPtr(std::unordered_map<int, Player> *playerMapPtr) {
+    //     this->playerMapPtr = playerMapPtr;
+    // }
 
     void Renderer::setCameraPos(float x, float y) {camera.x = x;camera.y = y;}
     void Renderer::setCameraZoom(float z) {

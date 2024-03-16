@@ -5,7 +5,7 @@
 #include "io/keyboard.h"
 #include "io/renderer.h"
 #include "loadTextures.h"
-
+#include "game/game.h"
 
 // Init vars
 int screenWidth = 1680;
@@ -15,12 +15,11 @@ bool closing = false;               // Variable to change to close game, all thr
 
 Keyboard::KeyboardInput keyboardInput;
 Renderer::Renderer renderer(0, 0, 1, screenWidth, screenHeight, 60);
-Textures textures;
+Game game{renderer.renderer};
 
 void physicsThreadFunction() {
     constexpr int targetFrameTime = 1000 / 60; // 60 frames per second
     auto lastFrameTime = std::chrono::high_resolution_clock::now();
-
     while (!closing) {
         auto currentTime = std::chrono::high_resolution_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFrameTime).count();
@@ -51,9 +50,9 @@ void physicsThreadFunction() {
 }
 
 
-
 int main()
 {
+    // renderer.setPlayerMapPtr(&game.playerMap);
     std::cout << "\nStarting TunnelFlag...\n";
     renderer.init();
 
@@ -66,3 +65,4 @@ int main()
     physicsThread.join();
     return 0;
 }
+

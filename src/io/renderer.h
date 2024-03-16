@@ -6,9 +6,12 @@
 #define DRAW_H
 #include <SDL2/SDL.h>
 #include <chrono>
+#include <unordered_map>
 #include <SDL2/SDL_image.h>
 
 #include "../game/entity.h"
+#include "../game/player.h"
+
 
 namespace Renderer {
     /*
@@ -37,6 +40,7 @@ namespace Renderer {
 
     public:
         Entity player1{nullptr, 0, 0, 0, 0};
+        // std::unordered_map<int, Player>* playerMapPtr;
 
         SDL_Window *window = nullptr;       //SDL window and renderer objects
         SDL_Renderer *renderer = nullptr;
@@ -49,6 +53,8 @@ namespace Renderer {
 
         void render();
 
+        void renderPlayers();
+
 
 
         void setCameraPos(float x, float y);
@@ -58,6 +64,7 @@ namespace Renderer {
         void setMaxFPS(int maxFPS);
         void zoomIn();
         void zoomOut();
+        // void setPlayerMapPtr(std::unordered_map<int, Player>* playerMapptr);
 
         float getCameraPosx() const;
         float getCameraPosy() const;

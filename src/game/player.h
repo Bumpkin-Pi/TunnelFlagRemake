@@ -16,7 +16,7 @@ class Player {
     float maxSpeed = 1;
 public:
     Entity entity{nullptr, 0, 0, 10, 10};
-    Player(int team, float x, float y, SDL_Texture *texture = nullptr);
+    Player(int team, float x, float y, SDL_Texture *texture);
 };
 
 

@@ -11,8 +11,6 @@
 #include "../loadTextures.h"
 #include "player.h"
 
-
-
 class Game {
     /*
      * ## Game; contains all client side game logic.
@@ -23,15 +21,16 @@ class Game {
      * Should generally be under the control of the server, with little actual gameplay logic.
      */
     Textures textures;
-    std::unordered_map<int, Player> playerMap;
-    int selfID = 0;
+    int selfID = 012;
 
 public:
-    Game(SDL_Renderer *renderer);
-    Player* getPlayerByID(int id);
-    Player* addPlayerByID(int id, Player player);
-    Player* removePlayerByID(int id);
+    std::unordered_map<int, Player> playerMap;
 
+    Game(SDL_Renderer *renderer);
+    ~Game();
+    Player* getPlayerByID(int id);
+    void addPlayerByID(int id, Player player);
+    void removePlayerByID(int id);
 };
 
 

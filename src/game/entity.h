@@ -29,10 +29,12 @@ public:
     void render(SDL_Renderer *renderer, int camerax, int cameray, float camerazoom, int screenWidth, int screenHeight);
 
     void setPos(float x, float y);
+    void setWidthAndHeight(int width, int height);
 
     float getPosx() const;
     float getPosy() const;
-
+    int getWidth();
+    int getHeight();
     void setSprite(SDL_Texture* tex);
     SDL_Texture* getSprite() const;
 

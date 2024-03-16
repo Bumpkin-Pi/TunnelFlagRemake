@@ -11,8 +11,11 @@
 Game::Game(SDL_Renderer *renderer) {
     textures = LoadTextures(renderer);
     addPlayerByID(selfID, Player{1, 50, 50, textures.player1});
-    addPlayerByID(2, Player{1, 50, 50, textures.player2});
+    addPlayerByID(2, Player{1, 100, 50, textures.player2});
+    // getPlayerByID(selfID)->entity.setSprite(textures.player1);
 }
+// Game::~Game() {UnloadTextures(textures);} // For some reason, when I bother to delete the textures, it gets angry at me, so idk.
+
 
 Player *Game::getPlayerByID(int id) {
     auto player = playerMap.find(id);
@@ -21,7 +24,7 @@ Player *Game::getPlayerByID(int id) {
     }
     return nullptr;
 }
-Player *Game::removePlayerByID(int id) {
+void Game::removePlayerByID(int id) {
     auto player = playerMap.find(id);
     if (player != playerMap.end()) {
         playerMap.erase(player);
@@ -29,9 +32,7 @@ Player *Game::removePlayerByID(int id) {
         std::cout << "Failed to remove player by ID: " << id << "\n";
     }
 }
-Player *Game::addPlayerByID(int id, Player player) {
+void Game::addPlayerByID(int id, Player player) {
     playerMap.emplace(id, player);
 }
-
-
 
