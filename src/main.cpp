@@ -2,9 +2,8 @@
 #include <thread>
 #include <chrono>
 
-#include "keyboard.h"
-#include "renderer.h"
-#include "entity.h"
+#include "io/keyboard.h"
+#include "io/renderer.h"
 #include "loadTextures.h"
 
 

@@ -3,7 +3,7 @@
 //
 
 #include "entity.h"
-#include "renderer.h"
+#include "../io/renderer.h"
 
 Entity::Entity(SDL_Texture* sprite, float x, float y, int width, int height)
         : sprite(sprite), x(x), y(y), width(width), height(height), velocityX(0), velocityY(0){

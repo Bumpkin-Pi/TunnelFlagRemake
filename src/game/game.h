@@ -4,10 +4,14 @@
 
 #ifndef GAME_H
 #define GAME_H
+#include "../loadTextures.h"
+
+class Game {
+    Textures textures;
 
 
 
-class game {
+    Game();
 
 };
 

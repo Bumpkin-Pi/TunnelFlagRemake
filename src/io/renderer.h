@@ -8,7 +8,7 @@
 #include <chrono>
 #include <SDL2/SDL_image.h>
 
-#include "entity.h"
+#include "../game/entity.h"
 
 namespace Renderer {
     struct Camera {

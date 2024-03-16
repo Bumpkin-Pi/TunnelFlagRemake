@@ -7,7 +7,6 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include "entity.h"
 extern bool closing;
 
 namespace Renderer {
@@ -66,9 +65,6 @@ namespace Renderer {
         //     std::cout << "FPS: " << fps << std::endl;
         //     HstartTime = std::chrono::high_resolution_clock::now();
         // }
-
-
-
     }
 
     void Renderer::clearScreen() {

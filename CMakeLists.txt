@@ -18,16 +18,18 @@ include_directories(${SDL2_IMAGE_LIBRARY_PATH})
 # Set the source files
 set(SOURCE_FILES
         src/main.cpp
-        src/keyboard.cpp
-        src/keyboard.h
-        src/renderer.cpp
-        src/renderer.h
-        src/entity.cpp
-        src/entity.h
+        src/io/keyboard.cpp
+        src/io/keyboard.h
+        src/io/renderer.cpp
+        src/io/renderer.h
+        src/game/entity.cpp
+        src/game/entity.h
         src/loadTextures.cpp
         src/loadTextures.h
-        src/game.cpp
-        src/game.h
+        src/game/game.cpp
+        src/game/game.h
+        src/game/player.cpp
+        src/game/player.h
 )
 
 # Add the executable and link with SDL2 and SDL_image libraries
