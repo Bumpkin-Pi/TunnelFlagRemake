@@ -76,8 +76,8 @@ void Game::processSubpacket(const std::string& subpacketLine) {
             std::cout << "Player " << player->username << " moved to ("
                       << x << ", " << y << ") with velocity (" << vx << ", " << vy << ")" << std::endl;
             player->setPos(x, y);
-            player->velocityX = vx; // TODO: Proper getters and setters for velocity, as well as username.
-            player->velocityY = vy;
+            player->setVelocityX(vx); // TODO: Proper getters and setters for velocity, as well as username.
+            player->setVelocityY(vy);
         } else {
             std::cerr << "Player with ID not found." << std::endl;
         }
@@ -100,12 +100,12 @@ void Game::processKeyboard(Keyboard::KeyboardInput keyboard) {
 
     if (keyboard.isUpScroll()) {renderer.zoomOut();
     } else if (keyboard.isDownScroll()) {renderer.zoomIn();}
-    if (keyboard.getState(keyboard.keybinds.PlayerUp)) {getPlayerByID(selfID)->velocityY = -1; // Move up
-    } else if (keyboard.getState(keyboard.keybinds.PlayerDown)) {getPlayerByID(selfID)->velocityY = 1; // Move down
-    } else {getPlayerByID(selfID)->velocityY = 0;} // No movement
-    if (keyboard.getState(keyboard.keybinds.PlayerLeft)) {getPlayerByID(selfID)->velocityX = -1; // Move left
-    } else if (keyboard.getState(keyboard.keybinds.PlayerRight)) {getPlayerByID(selfID)->velocityX = 1; // Move right
-    } else {getPlayerByID(selfID)->velocityX = 0;} // No movement
+    if (keyboard.getState(keyboard.keybinds.PlayerUp)) {getPlayerByID(selfID)->setVelocityY(-1);; // Move up
+    } else if (keyboard.getState(keyboard.keybinds.PlayerDown)) {getPlayerByID(selfID)->setVelocityY(1);; // Move down
+    } else {getPlayerByID(selfID)->setVelocityY(0);} // No movement
+    if (keyboard.getState(keyboard.keybinds.PlayerLeft)) {getPlayerByID(selfID)->setVelocityX(-1); // Move left
+    } else if (keyboard.getState(keyboard.keybinds.PlayerRight)) {getPlayerByID(selfID)->setVelocityX(1); // Move right
+    } else {getPlayerByID(selfID)->setVelocityX(0);} // No movement
     if (keyboard.getState(keyboard.keybinds.cameraToPlayer)) {
         renderer.setCameraPos(getPlayerByID(selfID)->getPosx(), getPlayerByID(selfID)->getPosy());
     }

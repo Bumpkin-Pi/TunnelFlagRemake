@@ -46,7 +46,7 @@ int main()
     std::thread physicsThread(&physicsThreadFunction);
 
     std::string packet = "PLAYERMESSAGE:22,Hello world\n"
-                                "PLAYERMOVE:22,-34,678.7,-1,0";
+                                "PLAYERMOVE:22,34,678.7,-1,0";
     game.processPacketLines(packet);
     while (!closing) {
         game.render();

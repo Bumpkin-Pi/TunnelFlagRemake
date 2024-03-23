@@ -53,11 +53,19 @@ void Entity::setWidthAndHeight(int width, int height) {
     this->width = width;
     this->height = height;
 }
+void Entity::setVelocity(float x, float y) {this->velocityX=x,this->velocityY=y;}
+void Entity::setVelocityX(float x) {this->velocityX=x;}
+void Entity::setVelocityY(float y) {this->velocityY=y;}
+
 
 float Entity::getPosx() const {return x;}
 float Entity::getPosy() const {return y;}
+float Entity::getVelocityX() const {return velocityX;}
+float Entity::getVelocityY() const {return velocityY;}
+
 int Entity::getHeight() {return height;}
 int Entity::getWidth() {return width;}
+
 
 SDL_Texture *Entity::getSprite() const {return sprite;}
 void Entity::setSprite(SDL_Texture *tex) {sprite = tex;}
