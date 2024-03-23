@@ -6,6 +6,7 @@
 #define PLAYER_H
 #include "entity.h"
 #include <SDL2/SDL_image.h>
+#include <string>
 
 class Player {
     /*
@@ -15,8 +16,10 @@ class Player {
     int health = 100;
     float maxSpeed = 1;
 public:
+    std::string username;
+
     Entity entity{nullptr, 0, 0, 10, 10};
-    Player(int team, float x, float y, SDL_Texture *texture);
+    Player(int team, float x, float y, SDL_Texture *texture, std::string username);
 };
 
 

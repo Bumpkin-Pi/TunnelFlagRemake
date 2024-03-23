@@ -4,7 +4,9 @@
 
 #include "player.h"
 
-Player::Player(int team, float x, float y, SDL_Texture* texture) : team(team) {
+#include <utility>
+
+Player::Player(int team, float x, float y, SDL_Texture* texture, std::string username) : team(team), username(std::move(username)) {
     entity.setWidthAndHeight(50, 50);
     entity.setPos(x, y);
     entity.setSprite(texture);

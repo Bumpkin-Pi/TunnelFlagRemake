@@ -1,12 +1,12 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <SDL2/SDL_net.h>
 
 #include "io/keyboard.h"
 #include "io/renderer.h"
 #include "loadTextures.h"
 #include "game/game.h"
-
 // Init vars
 int screenWidth = 1680;
 int screenHeight = 1050;
@@ -28,6 +28,7 @@ void physicsThreadFunction() {
             std::this_thread::sleep_for(std::chrono::milliseconds(targetFrameTime - elapsedTime));
         }
 
+        game.clientUpdate();
         // Update logic
         renderer.player1.update();
         keyboardInput.update();
@@ -58,7 +59,9 @@ int main()
 
     std::thread physicsThread(&physicsThreadFunction);
 
-
+    std::string packet = "PLAYERMESSAGE:22,Hello world\n"
+                                "PLAYERMOVE:22,-34,678.7,-1,0";
+    game.processPacketLines(packet);
     while (!closing) {
         renderer.render();
     }

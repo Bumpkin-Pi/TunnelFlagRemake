@@ -69,7 +69,7 @@ namespace Renderer {
         // }
     }
 
-    void Renderer::renderPlayers() {
+    void Renderer::renderPlayers() { // Loops through players and renders them all.
         for (auto& pair : game.playerMap) {
             pair.second.entity.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
         }

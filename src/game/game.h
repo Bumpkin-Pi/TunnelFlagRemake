@@ -7,9 +7,12 @@
 
 #include <unordered_map>
 #include <SDL2/SDL.h>
+#include <iostream>
+#include <sstream>
 
 #include "../loadTextures.h"
 #include "player.h"
+
 
 class Game {
     /*
@@ -27,10 +30,17 @@ public:
     std::unordered_map<int, Player> playerMap;
 
     Game(SDL_Renderer *renderer);
-    ~Game();
+    // ~Game();
     Player* getPlayerByID(int id);
     void addPlayerByID(int id, Player player);
     void removePlayerByID(int id);
+    void processSubpacket(const std::string& subpacketLine);
+    void processPacketLines(const std::string& packetLines);
+
+    void processKeyboard();
+
+    void clientUpdate();
+
 };
 
 
