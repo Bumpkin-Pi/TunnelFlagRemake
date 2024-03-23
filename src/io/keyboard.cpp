@@ -13,7 +13,7 @@ namespace Keyboard {
     bool KeyboardInput::isRightClick() const {
         return this->leftClick;
     }
-    bool KeyboardInput::isKeyDown(SDL_Scancode key) const {
+    bool KeyboardInput::getState(SDL_Scancode key) const {
         return state[key];
     }
 

@@ -33,7 +33,6 @@ namespace Renderer {
             // Handle error
         }
 
-        player1 = Entity(texture, 100, 100, 50, 50);
     }
     void Renderer::init() {
 
@@ -54,7 +53,6 @@ namespace Renderer {
         clearScreen();
         // Draw some shit idk
 
-        player1.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
         renderPlayers();
         showScreen();
         auto endTime = std::chrono::high_resolution_clock::now();
@@ -71,7 +69,7 @@ namespace Renderer {
 
     void Renderer::renderPlayers() { // Loops through players and renders them all.
         for (auto& pair : game.playerMap) {
-            pair.second.entity.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
+            pair.second.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
         }
     }
 

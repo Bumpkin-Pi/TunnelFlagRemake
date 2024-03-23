@@ -13,12 +13,10 @@ class Entity {
      * Generic entity class.
      * Contains basic location and velocity data, as well as a texture pointer, and a drawing method to be called from the Renderer.
      */
-private:
     float x,y;
     int width,height;
     SDL_Rect rect;
     SDL_Texture* sprite;
-
 
 public:
     float velocityX;

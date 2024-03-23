@@ -11,18 +11,14 @@
 
 namespace Keyboard {
 
-
-    struct PlayerKeybinds {
-        SDL_Scancode up = SDL_SCANCODE_W;
-        SDL_Scancode down = SDL_SCANCODE_S;
-        SDL_Scancode left = SDL_SCANCODE_A;
-        SDL_Scancode right = SDL_SCANCODE_D;
-    };
-
     struct Keybinds {
-        PlayerKeybinds playerKeybinds;
+        SDL_Scancode PlayerUp = SDL_SCANCODE_W;
+        SDL_Scancode PlayerDown = SDL_SCANCODE_S;
+        SDL_Scancode PlayerLeft = SDL_SCANCODE_A;
+        SDL_Scancode PlayerRight = SDL_SCANCODE_D;
         SDL_Scancode cameraToPlayer = SDL_SCANCODE_SPACE;
     };
+
 
     class KeyboardInput {
     private:
@@ -35,12 +31,11 @@ namespace Keyboard {
 
         bool isLeftClick() const;
         bool isRightClick() const;
-        bool isKeyDown(SDL_Scancode key) const;
-        bool isKeyPressed (SDL_Scancode key) const;
+        bool getState(SDL_Scancode key) const;
+        bool isKeyPressed(SDL_Scancode key) const;
         bool isUpScroll () const;
         bool isDownScroll () const;
     };
-
 
 
 } // namespace Keyboard

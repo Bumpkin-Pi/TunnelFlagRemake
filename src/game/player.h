@@ -8,7 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include <string>
 
-class Player {
+class Player : public Entity{
     /*
      * Generic player class. Expand as needed. Contains instance of Entity class
      */
@@ -18,7 +18,6 @@ class Player {
 public:
     std::string username;
 
-    Entity entity{nullptr, 0, 0, 10, 10};
     Player(int team, float x, float y, SDL_Texture *texture, std::string username);
 };
 

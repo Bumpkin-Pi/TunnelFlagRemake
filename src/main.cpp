@@ -4,7 +4,6 @@
 #include <SDL2/SDL_net.h>
 
 #include "io/keyboard.h"
-#include "io/renderer.h"
 #include "loadTextures.h"
 #include "game/game.h"
 // Init vars
@@ -14,8 +13,7 @@ int screenHeight = 1050;
 bool closing = false;               // Variable to change to close game, all threads should check this variable to close.
 
 Keyboard::KeyboardInput keyboardInput;
-Renderer::Renderer renderer(0, 0, 1, screenWidth, screenHeight, 60);
-Game game{renderer.renderer};
+Game game;
 
 void physicsThreadFunction() {
     constexpr int targetFrameTime = 1000 / 60; // 60 frames per second
@@ -29,21 +27,9 @@ void physicsThreadFunction() {
         }
 
         game.clientUpdate();
+        game.processKeyboard(keyboardInput);
         // Update logic
-        renderer.player1.update();
         keyboardInput.update();
-        if (keyboardInput.isUpScroll()) {renderer.zoomOut();
-        } else if (keyboardInput.isDownScroll()) {renderer.zoomIn();}
-        if (keyboardInput.isKeyDown(keyboardInput.keybinds.playerKeybinds.up)) {renderer.player1.velocityY = -1; // Move up
-        } else if (keyboardInput.isKeyDown(keyboardInput.keybinds.playerKeybinds.down)) {renderer.player1.velocityY = 1; // Move down
-        } else {renderer.player1.velocityY = 0;} // No movement
-        if (keyboardInput.isKeyDown(keyboardInput.keybinds.playerKeybinds.left)) {renderer.player1.velocityX = -1; // Move left
-        } else if (keyboardInput.isKeyDown(keyboardInput.keybinds.playerKeybinds.right)) {renderer.player1.velocityX = 1; // Move right
-        } else {renderer.player1.velocityX = 0;} // No movement
-        if (keyboardInput.isKeyDown(keyboardInput.keybinds.cameraToPlayer)) {
-            renderer.setCameraPos(renderer.player1.getPosx(), renderer.player1.getPosy());
-        }
-
 
         // Update last frame time
         lastFrameTime = std::chrono::high_resolution_clock::now();
@@ -55,7 +41,7 @@ int main()
 {
     // renderer.setPlayerMapPtr(&game.playerMap);
     std::cout << "\nStarting TunnelFlag...\n";
-    renderer.init();
+    game.init();
 
     std::thread physicsThread(&physicsThreadFunction);
 
@@ -63,7 +49,7 @@ int main()
                                 "PLAYERMOVE:22,-34,678.7,-1,0";
     game.processPacketLines(packet);
     while (!closing) {
-        renderer.render();
+        game.render();
     }
     physicsThread.join();
     return 0;

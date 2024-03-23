@@ -39,7 +39,6 @@ namespace Renderer {
         void showScreen();
 
     public:
-        Entity player1{nullptr, 0, 0, 0, 0};
         // std::unordered_map<int, Player>* playerMapPtr;
 
         SDL_Window *window = nullptr;       //SDL window and renderer objects

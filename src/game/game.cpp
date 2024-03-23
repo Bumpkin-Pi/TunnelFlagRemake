@@ -9,12 +9,14 @@
 // gone away marker
 //
 
-Game::Game(SDL_Renderer *renderer) {
-    textures = LoadTextures(renderer); // Loads textures from textures folder
+Game::Game() {
+    textures = LoadTextures(renderer.renderer); // Loads textures from textures folder
     addPlayerByID(selfID, Player{1, 50, 50, textures.player1, "uwuslayer123"}); // Debug players.
-    addPlayerByID(22, Player{1, 100, 50, textures.player2, "I am a huge bitch"});
+    addPlayerByID(22, Player{1, 100, 50, textures.player2, "I am very cool"});
 }
 // Game::~Game() {UnloadTextures(textures);} // For some reason, when I bother to delete the textures, it gets angry at me, so idk.
+void Game::init() {renderer.init();} // Possibly bad way of doing that but whatever.
+void Game::render() {renderer.render();}
 
 
 Player *Game::getPlayerByID(int id) {
@@ -38,7 +40,7 @@ void Game::addPlayerByID(int id, Player player) {
 
 void Game::clientUpdate() {
     for (auto& pair : playerMap) {
-        pair.second.entity.update();
+        pair.second.update();
     }
 }
 
@@ -73,9 +75,9 @@ void Game::processSubpacket(const std::string& subpacketLine) {
         if (player) {
             std::cout << "Player " << player->username << " moved to ("
                       << x << ", " << y << ") with velocity (" << vx << ", " << vy << ")" << std::endl;
-            player->entity.setPos(x, y);
-            player->entity.velocityX = vx; // TODO: Proper getters and setters for velocity, as well as username.
-            player->entity.velocityY = vy;
+            player->setPos(x, y);
+            player->velocityX = vx; // TODO: Proper getters and setters for velocity, as well as username.
+            player->velocityY = vy;
         } else {
             std::cerr << "Player with ID not found." << std::endl;
         }
@@ -92,3 +94,21 @@ void Game::processPacketLines(const std::string& packetLines) {
         }
     }
 }
+
+void Game::processKeyboard(Keyboard::KeyboardInput keyboard) {
+    // Might be smart to just store the getPlayerByID(selfID) pointer rather than rerunning it every time
+
+    if (keyboard.isUpScroll()) {renderer.zoomOut();
+    } else if (keyboard.isDownScroll()) {renderer.zoomIn();}
+    if (keyboard.getState(keyboard.keybinds.PlayerUp)) {getPlayerByID(selfID)->velocityY = -1; // Move up
+    } else if (keyboard.getState(keyboard.keybinds.PlayerDown)) {getPlayerByID(selfID)->velocityY = 1; // Move down
+    } else {getPlayerByID(selfID)->velocityY = 0;} // No movement
+    if (keyboard.getState(keyboard.keybinds.PlayerLeft)) {getPlayerByID(selfID)->velocityX = -1; // Move left
+    } else if (keyboard.getState(keyboard.keybinds.PlayerRight)) {getPlayerByID(selfID)->velocityX = 1; // Move right
+    } else {getPlayerByID(selfID)->velocityX = 0;} // No movement
+    if (keyboard.getState(keyboard.keybinds.cameraToPlayer)) {
+        renderer.setCameraPos(getPlayerByID(selfID)->getPosx(), getPlayerByID(selfID)->getPosy());
+    }
+
+}
+

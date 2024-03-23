@@ -11,8 +11,11 @@
 #include <sstream>
 
 #include "../loadTextures.h"
+#include "../io/keyboard.h"
+#include "../io/renderer.h"
 #include "player.h"
-
+extern int screenWidth;
+extern int screenHeight;
 
 class Game {
     /*
@@ -25,11 +28,15 @@ class Game {
      */
     Textures textures;
     int selfID = 012;
+    Renderer::Renderer renderer{0, 0, 1, screenWidth, screenHeight, 60};
+
 
 public:
     std::unordered_map<int, Player> playerMap;
 
-    Game(SDL_Renderer *renderer);
+    Game();
+    void init();
+    void render();
     // ~Game();
     Player* getPlayerByID(int id);
     void addPlayerByID(int id, Player player);
@@ -37,7 +44,7 @@ public:
     void processSubpacket(const std::string& subpacketLine);
     void processPacketLines(const std::string& packetLines);
 
-    void processKeyboard();
+    void processKeyboard(Keyboard::KeyboardInput keyboard);
 
     void clientUpdate();
 
