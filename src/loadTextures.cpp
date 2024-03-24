@@ -6,11 +6,6 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
-// struct Textures {
-//     SDL_Texture* player1;
-//     SDL_Texture* player2;
-//     SDL_Texture* background;
-// };
 
 Textures LoadTextures(SDL_Renderer *renderer) {
     Textures textures{};
@@ -20,7 +15,7 @@ Textures LoadTextures(SDL_Renderer *renderer) {
     return textures;
 }
 
-Textures UnloadTextures(Textures textures) {
+void UnloadTextures(Textures textures) {
     SDL_DestroyTexture(textures.player1);
     SDL_DestroyTexture(textures.player1);
     // SDL_DestroyTexture(textures.background);

@@ -11,6 +11,7 @@
 
 namespace Keyboard {
 
+    // Keybinds for input (This should be refrenced instead of keycodes, so that keybinds can be changed)
     struct Keybinds {
         SDL_Scancode PlayerUp = SDL_SCANCODE_W;
         SDL_Scancode PlayerDown = SDL_SCANCODE_S;
@@ -27,13 +28,18 @@ namespace Keyboard {
 
     public:
         Keybinds keybinds;
+        //
         void update();
 
+        // Returns true if left mouse was pressed last update() (not if held)
         bool isLeftClick() const;
+        // Returns true if right mouse was pressed last update() (not if held)
         bool isRightClick() const;
+        // checks if key was pressed at time of last update().
         bool getState(SDL_Scancode key) const;
-        bool isKeyPressed(SDL_Scancode key) const;
+        // Returns true if scrollwheel was ticked up last frame.
         bool isUpScroll () const;
+        // Returns true if scrollwheel was ticked down last frame.
         bool isDownScroll () const;
     };
 

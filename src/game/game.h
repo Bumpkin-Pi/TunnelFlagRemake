@@ -38,6 +38,7 @@ public:
     Renderer::Renderer renderer{0, 0, 1, screenWidth, screenHeight, 60};
 
     Game();
+    ~Game();
 
     // Get player from playerMap by ID. Returns pointer to player.
     Player* getPlayerByID(int id);

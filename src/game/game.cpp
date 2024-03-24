@@ -14,7 +14,7 @@ Game::Game() {
     addPlayerByID(selfID, Player{1, 50, 50, textures.player1, "uwuslayer123"}); // Debug players.
     addPlayerByID(22, Player{1, 100, 50, textures.player2, "I am very cool"});
 }
-// Game::~Game() {UnloadTextures(textures);} // For some reason, when I bother to delete the textures, it gets angry at me, so idk.
+Game::~Game() {UnloadTextures(textures);} // For some reason, when I bother to delete the textures, it gets angry at me, so idk.
 
 
 
