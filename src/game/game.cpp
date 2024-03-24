@@ -15,8 +15,7 @@ Game::Game() {
     addPlayerByID(22, Player{1, 100, 50, textures.player2, "I am very cool"});
 }
 // Game::~Game() {UnloadTextures(textures);} // For some reason, when I bother to delete the textures, it gets angry at me, so idk.
-void Game::init() {renderer.init();} // Possibly bad way of doing that but whatever.
-void Game::render() {renderer.render();}
+
 
 
 Player *Game::getPlayerByID(int id) {
@@ -59,7 +58,7 @@ void Game::processSubpacket(const std::string& subpacketLine) {
         int id = std::stoi(idStr);
         Player* player = getPlayerByID(id);
         if (player) {
-            std::cout << "Player " << player->username << " says: " << message << std::endl;
+            std::cout << "Player " << player->getUsername() << " says: " << message << std::endl;
         } else {
             std::cerr << "Player with ID " << id << " not found." << std::endl;
         }
@@ -73,7 +72,7 @@ void Game::processSubpacket(const std::string& subpacketLine) {
 
         Player* player = getPlayerByID(id);
         if (player) {
-            std::cout << "Player " << player->username << " moved to ("
+            std::cout << "Player " << player->getUsername() << " moved to ("
                       << x << ", " << y << ") with velocity (" << vx << ", " << vy << ")" << std::endl;
             player->setPos(x, y);
             player->setVelocityX(vx); // TODO: Proper getters and setters for velocity, as well as username.
@@ -98,7 +97,7 @@ void Game::processPacketLines(const std::string& packetLines) {
 void Game::processKeyboard(Keyboard::KeyboardInput keyboard) {
     // Might be smart to just store the getPlayerByID(selfID) pointer rather than rerunning it every time
 
-    if (keyboard.isUpScroll()) {renderer.zoomOut();
+    if (keyboard.isUpScroll()) {renderer.zoomOut();             //This whole movement system should probably be reworked
     } else if (keyboard.isDownScroll()) {renderer.zoomIn();}
     if (keyboard.getState(keyboard.keybinds.PlayerUp)) {getPlayerByID(selfID)->setVelocityY(-1);; // Move up
     } else if (keyboard.getState(keyboard.keybinds.PlayerDown)) {getPlayerByID(selfID)->setVelocityY(1);; // Move down

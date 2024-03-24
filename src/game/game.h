@@ -17,35 +17,41 @@
 extern int screenWidth;
 extern int screenHeight;
 
+/*
+Game; contains all client side game logic.
+Should include:
+ - Entity position and velocity updates
+ - Local player actions and UI
+ - Basic interactions with external network class
+Should generally be under the control of the server, with little actual gameplay logic.
+*/
 class Game {
-    /*
-     * ## Game; contains all client side game logic.
-     * Should include:
-     *  - Entity position and velocity updates
-     *  - Local player actions and UI
-     *  - Basic interactions with external network class
-     * Should generally be under the control of the server, with little actual gameplay logic.
-     */
+
     Textures textures;
     int selfID = 012;
-    Renderer::Renderer renderer{0, 0, 1, screenWidth, screenHeight, 60};
 
 
 public:
+    // Map of all players. (Basically just a list but fast)
     std::unordered_map<int, Player> playerMap;
 
+    Renderer::Renderer renderer{0, 0, 1, screenWidth, screenHeight, 60};
+
     Game();
-    void init();
-    void render();
-    // ~Game();
+
+    // Get player from playerMap by ID. Returns pointer to player.
     Player* getPlayerByID(int id);
+    // Adds a plyer to playerMap, with provided ID.
     void addPlayerByID(int id, Player player);
+    // Removes a player with given ID from playerMap
     void removePlayerByID(int id);
+    // Processes indevidual lines of packets
     void processSubpacket(const std::string& subpacketLine);
+    // Processes a full string of packet lines
     void processPacketLines(const std::string& packetLines);
-
+    // Updates player position etc based on keyboard input.
     void processKeyboard(Keyboard::KeyboardInput keyboard);
-
+    // Currently just updates all player positiones based on their velocity
     void clientUpdate();
 
 };

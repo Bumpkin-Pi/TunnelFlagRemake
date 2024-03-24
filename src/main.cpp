@@ -4,10 +4,9 @@
 #include <SDL2/SDL_net.h>
 
 #include "io/keyboard.h"
-#include "loadTextures.h"
 #include "game/game.h"
-// Init vars
-int screenWidth = 1680;
+
+int screenWidth = 1680;     // Determins starting screen resolution.
 int screenHeight = 1050;
 
 bool closing = false;               // Variable to change to close game, all threads should check this variable to close.
@@ -41,15 +40,16 @@ int main()
 {
     // renderer.setPlayerMapPtr(&game.playerMap);
     std::cout << "\nStarting TunnelFlag...\n";
-    game.init();
+    game.renderer.init();
 
     std::thread physicsThread(&physicsThreadFunction);
 
-    std::string packet = "PLAYERMESSAGE:22,Hello world\n"
+    const std::string packet = "PLAYERMESSAGE:22,Hello world\n"
                                 "PLAYERMOVE:22,34,678.7,-1,0";
     game.processPacketLines(packet);
+    game.renderer.setScreenRes(1000, 1000);
     while (!closing) {
-        game.render();
+        game.renderer.render();
     }
     physicsThread.join();
     return 0;

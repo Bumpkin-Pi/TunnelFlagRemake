@@ -14,11 +14,30 @@ class Player : public Entity{
      */
     int team = 0;
     int health = 100;
+    int maxHealth = 100;
     float maxSpeed = 1;
-public:
     std::string username;
 
+public:
+
     Player(int team, float x, float y, SDL_Texture *texture, std::string username);
+
+
+    std::string getUsername();                          // Getters
+    int getHealth();
+    int getTeam();
+    int getMaxHealth();
+    float getMaxSpeed();
+
+    void setUsername(std::string username);             // Setters
+    // Set health value; clamped between 0 and Player.maxHealth
+    void setHealth(int health);
+    // Changes health by value input. Clamped between 0 and Player.maxHealth
+    void changeHealth(int healthChange);
+    void setTeam(int team);
+    void setMaxHealth(int maxHealth);
+    void setMaxSpeed(float maxSpeed);
+
 };
 
 

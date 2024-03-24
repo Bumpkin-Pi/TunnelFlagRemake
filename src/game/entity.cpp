@@ -6,7 +6,7 @@
 #include "../io/renderer.h"
 
 Entity::Entity(SDL_Texture* sprite, float x, float y, int width, int height)
-        : sprite(sprite), x(x), y(y), width(width), height(height), velocityX(0), velocityY(0){
+        : sprite(sprite), x(x), y(y), width(width), height(height), vx(0), vy(0){
     rect.x = x;
     rect.y = y;
     rect.w = width;
@@ -41,8 +41,8 @@ void Entity::render(SDL_Renderer *renderer, int camerax, int cameray, float came
 }
 
 void Entity::update() {
-    x += velocityX;
-    y += velocityY;
+    x += vx;
+    y += vy;
 }
 
 void Entity::setPos(float x, float y) {
@@ -53,15 +53,15 @@ void Entity::setWidthAndHeight(int width, int height) {
     this->width = width;
     this->height = height;
 }
-void Entity::setVelocity(float x, float y) {this->velocityX=x,this->velocityY=y;}
-void Entity::setVelocityX(float x) {this->velocityX=x;}
-void Entity::setVelocityY(float y) {this->velocityY=y;}
+void Entity::setVelocity(float x, float y) {this->vx=x,this->vy=y;}
+void Entity::setVelocityX(float x) {this->vx=x;}
+void Entity::setVelocityY(float y) {this->vy=y;}
 
 
 float Entity::getPosx() const {return x;}
 float Entity::getPosy() const {return y;}
-float Entity::getVelocityX() const {return velocityX;}
-float Entity::getVelocityY() const {return velocityY;}
+float Entity::getVelocityX() const {return vx;}
+float Entity::getVelocityY() const {return vy;}
 
 int Entity::getHeight() {return height;}
 int Entity::getWidth() {return width;}

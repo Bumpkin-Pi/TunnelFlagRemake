@@ -86,12 +86,16 @@ namespace Renderer {
     // void Renderer::setPlayerMapPtr(std::unordered_map<int, Player> *playerMapPtr) {
     //     this->playerMapPtr = playerMapPtr;
     // }
+    void Renderer::setScreenRes(float height, float width) {
+        screenHeight = height;
+        screenWidth = width;
+        SDL_SetWindowSize(window, screenHeight, screenWidth);
+    }
 
     void Renderer::setCameraPos(float x, float y) {camera.x = x;camera.y = y;}
     void Renderer::setCameraZoom(float z) {
         if (z < zoomMax && z > zoomMin) {camera.z = z;}}
     void Renderer::setCameraPosAndZoom(float x, float y, float z) {camera.x = x;camera.y = y;camera.z = z;}
-    void Renderer::setResolution(int x, int y) {screenWidth = x;screenHeight = y;}
     void Renderer::setMaxFPS(int maxFPS) {this->maxFPS = maxFPS; frameDelay = 1000 / maxFPS;}
     float Renderer::getCameraPosx() const {return camera.x;}
     float Renderer::getCameraPosy() const {return camera.y;}
@@ -99,6 +103,8 @@ namespace Renderer {
     int Renderer::getResolutionx() const {return screenWidth;}
     int Renderer::getResolutiony() const {return screenHeight;}
     int Renderer::getMaxFPS() const {return maxFPS;}
+    int Renderer::getScreenHeight() const {return screenHeight;}
+    int Renderer::getScreenWidth() const {return screenWidth;}
 
 
     void Renderer::zoomIn() {
@@ -112,4 +118,7 @@ namespace Renderer {
             camera.z *= 1.11111;
         }
     }
+
+
+
 };
