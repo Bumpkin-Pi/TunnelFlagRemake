@@ -40,7 +40,6 @@ int main()
 {
     // renderer.setPlayerMapPtr(&game.playerMap);
     std::cout << "\nStarting TunnelFlag...\n";
-    game.renderer.init();
 
     std::thread physicsThread(&physicsThreadFunction);
 
