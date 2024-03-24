@@ -5,7 +5,6 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 #include <SDL2/SDL.h>
-#include <iostream>
 
 
 
@@ -23,7 +22,7 @@ namespace Keyboard {
 
     class KeyboardInput {
     private:
-        const Uint8* state = SDL_GetKeyboardState(NULL);
+        const Uint8* state = SDL_GetKeyboardState(nullptr);
         bool leftClick=false,rightClick=false,upScroll=false,downScroll=false;
 
     public:
@@ -32,15 +31,15 @@ namespace Keyboard {
         void update();
 
         // Returns true if left mouse was pressed last update() (not if held)
-        bool isLeftClick() const;
+        [[nodiscard]] bool isLeftClick() const;
         // Returns true if right mouse was pressed last update() (not if held)
-        bool isRightClick() const;
+        [[nodiscard]] bool isRightClick() const;
         // checks if key was pressed at time of last update().
-        bool getState(SDL_Scancode key) const;
+        [[nodiscard]] bool getState(SDL_Scancode key) const;
         // Returns true if scrollwheel was ticked up last frame.
-        bool isUpScroll () const;
+        [[nodiscard]] bool isUpScroll () const;
         // Returns true if scrollwheel was ticked down last frame.
-        bool isDownScroll () const;
+        [[nodiscard]] bool isDownScroll () const;
     };
 
 

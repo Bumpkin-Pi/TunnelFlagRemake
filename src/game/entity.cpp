@@ -16,7 +16,7 @@ Entity::Entity(SDL_Texture* sprite, float x, float y, int width, int height)
 //     SDL_DestroyTexture(sprite);
 // }
 
-void Entity::render(SDL_Renderer *renderer, int camerax, int cameray, float camerazoom, int screenWidth, int screenHeight) {
+void Entity::render(SDL_Renderer *renderer, const float camerax, const float cameray, const float camerazoom, const int screenWidth, const int screenHeight) {
     // Calculate camera center
     int cameraCenterX = screenWidth / 2;
     int cameraCenterY = screenHeight / 2;

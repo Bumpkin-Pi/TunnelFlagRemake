@@ -26,7 +26,7 @@ public:
     // Updates position based on velocity (vx,vy).
     void update();
     // Draws entity to correct location on screen, based on camera zoom, location, and window resolution.
-    void render(SDL_Renderer *renderer, int camerax, int cameray, float camerazoom, int screenWidth, int screenHeight);
+    void render(SDL_Renderer *renderer, float camerax, float cameray, float camerazoom, int screenWidth, int screenHeight);
 
     void setPos(float x, float y);                      // Setters
     void setWidthAndHeight(int width, int height);

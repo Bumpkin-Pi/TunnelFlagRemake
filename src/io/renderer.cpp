@@ -34,9 +34,7 @@ namespace Renderer {
         }
 
     }
-    void Renderer::init() {
 
-    }
 
     Renderer::~Renderer() {
         std::cout << "Quitting SDL\n";
@@ -67,18 +65,18 @@ namespace Renderer {
         // }
     }
 
-    void Renderer::renderPlayers() { // Loops through players and renders them all.
+    void Renderer::renderPlayers() const { // Loops through players and renders them all.
         for (auto& pair : game.playerMap) {
             pair.second.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
         }
     }
 
 
-    void Renderer::clearScreen() {
+    void Renderer::clearScreen() const {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
     }
-    void Renderer::showScreen() {
+    void Renderer::showScreen() const {
         SDL_RenderPresent(renderer);
     }
 

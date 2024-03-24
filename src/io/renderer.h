@@ -35,9 +35,9 @@ namespace Renderer {
         int frameCounter = 0; // Indexes for ever frame rendered.
 
 
-        void clearScreen();     // Clear screen buffer
-        void renderPlayers();   // Draw players to buffer
-        void showScreen();      // Show buffer
+        void clearScreen() const;     // Clear screen buffer
+        void renderPlayers() const;   // Draw players to buffer
+        void showScreen() const;      // Show buffer
 
     public:
         // std::unordered_map<int, Player>* playerMapPtr;
@@ -49,9 +49,7 @@ namespace Renderer {
         Renderer(float CameraX, float CameraY, float CameraZ, int screenWidth, int screenHeight, int maxFPS);
         ~Renderer();
 
-        // Initialise SDL window.
-        void init();
-        // Render a frame. (Calls all other
+        // Render a frame. (Calls all other rendering functions in order)
         void render();
 
 
