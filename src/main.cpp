@@ -1,7 +1,6 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <SDL2/SDL_net.h>
 
 #include "io/keyboard.h"
 #include "game/game.h"

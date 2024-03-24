@@ -6,8 +6,7 @@
 
 #include "game.h"
 #include "../io/renderer.h"
-// gone away marker
-//
+
 
 Game::Game() {
     textures = LoadTextures(renderer.renderer); // Loads textures from textures folder

@@ -4,7 +4,6 @@
 
 #include "loadTextures.h"
 #include <SDL2/SDL_image.h>
-#include <iostream>
 
 
 Textures LoadTextures(SDL_Renderer *renderer) {

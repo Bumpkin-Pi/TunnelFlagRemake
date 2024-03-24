@@ -6,11 +6,6 @@
 #define DRAW_H
 #include <SDL2/SDL.h>
 #include <chrono>
-#include <unordered_map>
-#include <SDL2/SDL_image.h>
-
-#include "../game/entity.h"
-#include "../game/player.h"
 
 
 namespace Renderer {
