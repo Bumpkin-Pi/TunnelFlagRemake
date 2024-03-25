@@ -25,7 +25,6 @@ namespace Renderer {
         SDL_RenderSetScale(renderer, 1, 1);
         SDL_SetWindowTitle(window, "Tunnel Flag");
 
-
         // Load player texture
         SDL_Texture* texture = IMG_LoadTexture(renderer, "../textures/player1.png"); //TODO: fix relative dirs.
         if (!texture) {

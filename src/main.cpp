@@ -35,7 +35,7 @@ void physicsThreadFunction() {
 }
 
 
-int main()
+int main(int argc, char* argv[])
 {
     // renderer.setPlayerMapPtr(&game.playerMap);
     std::cout << "\nStarting TunnelFlag...\n";

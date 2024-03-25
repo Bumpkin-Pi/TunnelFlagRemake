@@ -5,7 +5,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "entity.h"
+#ifdef __linux__
 #include <SDL2/SDL_image.h>
+#elif _WIN32
+#include <SDL_image.h>
+#else
+#endif
 #include <string>
 
 class Player : public Entity{

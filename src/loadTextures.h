@@ -4,8 +4,12 @@
 
 #ifndef LOADTEXTURES_H
 #define LOADTEXTURES_H
+#ifdef __linux__
 #include <SDL2/SDL.h>
-
+#elif _WIN32
+#include <SDL.h>
+#else
+#endif
 // Struct for all texture pointers.
 struct Textures {
     SDL_Texture* player1;
