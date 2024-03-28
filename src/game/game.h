@@ -11,6 +11,7 @@
 #include "../loadTextures.h"
 #include "../io/keyboard.h"
 #include "../io/renderer.h"
+#include "map.h"
 #include "player.h"
 extern int screenWidth;
 extern int screenHeight;
@@ -25,14 +26,14 @@ Should generally be under the control of the server, with little actual gameplay
 */
 class Game {
 
-    Textures textures;
+    Textures textures{};
     int selfID = 012;
 
 
 public:
     // Map of all players. (Basically just a list but fast)
     std::unordered_map<int, Player> playerMap;
-
+    Map map{0, 0};
     Renderer::Renderer renderer{0, 0, 1, screenWidth, screenHeight, 60};
 
     Game();

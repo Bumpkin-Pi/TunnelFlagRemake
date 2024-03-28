@@ -6,7 +6,7 @@
 #define DRAW_H
 #include <SDL2/SDL.h>
 #include <chrono>
-
+#include <vector>
 
 namespace Renderer {
     /*
@@ -31,6 +31,7 @@ namespace Renderer {
 
 
         void clearScreen() const;     // Clear screen buffer
+        void renderGridPoints(const std::vector<std::vector<short>>& grid) const; // Renders values of map (for debuging only)
         void renderPlayers() const;   // Draw players to buffer
         void showScreen() const;      // Show buffer
 
@@ -45,10 +46,10 @@ namespace Renderer {
         ~Renderer();
 
         // Render a frame. (Calls all other rendering functions in order)
-        void render();
+        void render(const std::vector<std::vector<short>>& grid);
 
 
-        void setScreenRes(float height, float width);                           // Setters
+        void setScreenRes(int height, int width);                           // Setters
         void setCameraPos(float x, float y);
         void setCameraZoom(float z);
         void setCameraPosAndZoom(float x, float y, float z);

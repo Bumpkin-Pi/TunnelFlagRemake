@@ -34,8 +34,6 @@ namespace Renderer {
         }
 
     }
-
-
     Renderer::~Renderer() {
         std::cout << "Quitting SDL\n";
         SDL_DestroyWindow(window);
@@ -43,26 +41,20 @@ namespace Renderer {
     }
 
 
-    void Renderer::render() {
+    void Renderer::render(const std::vector<std::vector<short>>& map) {
         auto startTime = std::chrono::high_resolution_clock::now();
 
         frameCounter++;
 
         clearScreen();
         // Draw some shit idk
-
+        renderGridPoints(map);
         renderPlayers();
         showScreen();
         auto endTime = std::chrono::high_resolution_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
         if (elapsedTime < frameDelay) {std::this_thread::sleep_for(std::chrono::milliseconds(frameDelay - elapsedTime));}
 
-        // if (frameCounter % 100 == 0) { // Average fps over 100 frames debug code.
-        //     // Calculate FPS
-        //     double fps = 100000.0 / (std::chrono::duration_cast<std::chrono::milliseconds>(endTime - HstartTime).count());
-        //     std::cout << "FPS: " << fps << std::endl;
-        //     HstartTime = std::chrono::high_resolution_clock::now();
-        // }
     }
 
     void Renderer::renderPlayers() const { // Loops through players and renders them all.
@@ -70,7 +62,37 @@ namespace Renderer {
             pair.second.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
         }
     }
+    void Renderer::renderGridPoints(const std::vector<std::vector<short>>& grid) const {
+        // Define colors based on the key
+        SDL_Color colors[] = {
+            {255, 255, 255, 255}, // white
+            {255, 0, 0, 255},     // red
+            {0, 0, 255, 255}      // blue
+        };
 
+        // Calculate initial position
+        int startX = static_cast<int>((-camera.x / 25) / camera.z);
+        int startY = static_cast<int>((-camera.y / 25) / camera.z);
+
+        // Render points on the screen based on the grid
+        for (size_t row = 0; row < grid.size(); ++row) {
+            for (size_t col = 0; col < grid[row].size(); ++col) {
+                // Calculate position of the point
+                int x = static_cast<int>((startX + col) * 25 * camera.z + screenWidth / 2);
+                int y = static_cast<int>((startY + row) * 25 * camera.z + screenHeight / 2);
+
+                // Get the color based on the value of the short
+                short value = grid[row][col];
+                SDL_Color color = colors[value];
+
+                // Set the color
+                SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+
+                // Render the point
+                SDL_RenderDrawPoint(renderer, x, y);
+            }
+        }
+    }
 
     void Renderer::clearScreen() const {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -84,10 +106,10 @@ namespace Renderer {
     // void Renderer::setPlayerMapPtr(std::unordered_map<int, Player> *playerMapPtr) {
     //     this->playerMapPtr = playerMapPtr;
     // }
-    void Renderer::setScreenRes(float height, float width) {
+    void Renderer::setScreenRes(int height, int width) {
         screenHeight = height;
         screenWidth = width;
-        SDL_SetWindowSize(window, screenHeight, screenWidth);
+        SDL_SetWindowSize(window, height, width);
     }
 
     void Renderer::setCameraPos(float x, float y) {camera.x = x;camera.y = y;}
