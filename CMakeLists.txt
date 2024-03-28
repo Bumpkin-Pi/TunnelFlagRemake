@@ -38,6 +38,8 @@ set(SOURCE_FILES
         src/game/game.h
         src/game/player.cpp
         src/game/player.h
+        src/game/map.cpp
+        src/game/map.h
 )
 
 # Add the executable and link with SDL2 and SDL_image libraries
