@@ -3,8 +3,12 @@
 //
 
 #include "loadTextures.h"
+#ifdef __linux__
 #include <SDL2/SDL_image.h>
-
+#elif _WIN32
+#include <SDL_image.h>
+#else
+#endif
 
 Textures LoadTextures(SDL_Renderer *renderer) {
     Textures textures{};
