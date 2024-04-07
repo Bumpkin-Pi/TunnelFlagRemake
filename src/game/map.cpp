@@ -28,3 +28,13 @@ void Map::setValue(int row, int column, short value) {
 }
 
 
+int Map::getColumns() {return columns;}
+int Map::getRows() {return rows;}
+
+void Map::setColumns(int columns) {this->columns = columns;}
+void Map::setRows(int rows) {this->rows = rows;}
+
+
+
+
+

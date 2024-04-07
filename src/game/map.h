@@ -20,6 +20,11 @@ public:
 
     void setValue(int row, int column, short value);
     [[nodiscard]] short getValue(int row, int column) const;
+
+    int getRows();
+    int getColumns();
+    void setRows(int rows);
+    void setColumns(int columns);
 };
 
 

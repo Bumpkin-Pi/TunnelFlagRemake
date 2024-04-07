@@ -9,10 +9,11 @@
 extern bool debugOutput;
 
 Game::Game(){
-    map = Map(100, 100);
+    map = Map(100, 200);
     textures = LoadTextures(renderer.renderer); // Loads textures from textures folder
-    addPlayerByID(selfID, Player{1, 50, 50, textures.player1, "uwuslayer123"}); // Debug players.
-    addPlayerByID(22, Player{1, 100, 50, textures.player2, "I am very cool"});
+    renderer.textures = &textures; // Janky as balls :).
+    addPlayerByID(selfID, Player{1, 0, 0, textures.player1, "uwuslayer123"}); // Debug players.
+    addPlayerByID(22, Player{2, 100, 50, textures.player2, "I am very cool"});
 }
 Game::~Game() {UnloadTextures(textures);} // For some reason, when I bother to delete the textures, it gets angry at me, so idk.
 

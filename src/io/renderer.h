@@ -12,6 +12,7 @@
 #endif
 #include <chrono>
 #include <vector>
+#include "../loadTextures.h"
 
 namespace Renderer {
     /*
@@ -30,19 +31,22 @@ namespace Renderer {
         int screenWidth=0,screenHeight=0; // Screen resolution.
         int maxFPS = 60; // Max FPS.
         int frameDelay = 1000 / maxFPS; // milliseconds per frame
-        float zoomMax = 10, zoomMin = 0.5; // Boundaries for how the camera zoom can be changed.
-        std::chrono::high_resolution_clock::time_point HstartTime = std::chrono::high_resolution_clock::now(); //Time used for 100fps average calc
+        float zoomMax = 10, zoomMin = 0.005; // Boundaries for how the camera zoom can be changed.
+        std::chrono::high_resolution_clock::time_point HstartTime = std::chrono::high_resolution_clock::now(); //Time used for 100frames average calc
         int frameCounter = 0; // Indexes for ever frame rendered.
+
 
 
         void clearScreen() const;     // Clear screen buffer
         void renderGridPoints(const std::vector<std::vector<short>>& grid) const; // Renders values of map (for debuging only)
+        void renderMarchingSquares(const std::vector<std::vector<short>>& grid) const;
         void renderPlayers() const;   // Draw players to buffer
         void showScreen() const;      // Show buffer
 
     public:
         // std::unordered_map<int, Player>* playerMapPtr;
 
+        Textures* textures;
         SDL_Window *window = nullptr;       //SDL window and renderer objects
         SDL_Renderer *renderer = nullptr;
 
@@ -74,6 +78,8 @@ namespace Renderer {
         int getScreenWidth() const;
         int getScreenHeight() const;
 
+        float realToPixelX(float realX) const;
+        float realToPixelY(float realY) const;
     };
 
 

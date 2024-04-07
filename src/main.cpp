@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <random>
 
 #include "io/keyboard.h"
 #include "game/game.h"
@@ -35,17 +36,33 @@ void physicsThreadFunction() {
     }
 }
 
+// Debug functions for testing map ----
+short generateRandomValue() {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<short> dist(0, 1); // Adjust range as needed
+    return dist(gen);
+}
+void randomizeMapValues(Map& map) {
+    for (int row = 0; row < map.getRows(); ++row) {
+        for (int col = 0; col < map.getColumns(); ++col) {
+            short value = generateRandomValue();
+            map.setValue(row, col, value);
+        }
+    }
+}
+// -------------
 
 int main(int argc, char* argv[]) {
+
     // Parse command line arguments
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
         if (arg == "--debug" || arg == "-d") { // Rules with debug output need to be done in a more set way
             debugOutput = true;
-        }
+        } 
     }
 
-    // renderer.setPlayerMapPtr(&game.playerMap);
     std::cout << "\nStarting TunnelFlag...\n";
 
     std::thread physicsThread(&physicsThreadFunction);
@@ -53,6 +70,7 @@ int main(int argc, char* argv[]) {
     const std::string packet = "PLAYERMESSAGE:22,Hello world\n"
                                 "PLAYERMOVE:22,34,678.7,-1,0";
     game.processPacketLines(packet);
+    randomizeMapValues(game.map);
     while (!closing) {
         game.renderer.render(game.map.map);
     }

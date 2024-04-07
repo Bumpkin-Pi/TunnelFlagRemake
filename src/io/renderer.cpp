@@ -13,7 +13,7 @@ extern Game game;
 
 namespace Renderer {
     Renderer::Renderer(float CameraX, float CameraY, float CameraZ, int screenWidth, int screenHeight, int maxFPS)
-    : screenWidth(screenWidth), screenHeight(screenHeight) {
+            : screenWidth(screenWidth), screenHeight(screenHeight) {
         camera.x = CameraX;
         camera.y = CameraY;
         camera.z = CameraZ;
@@ -39,7 +39,6 @@ namespace Renderer {
         SDL_Quit();
     }
 
-
     void Renderer::render(const std::vector<std::vector<short>>& map) {
         auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -47,13 +46,13 @@ namespace Renderer {
 
         clearScreen();
         // Draw some shit idk
-        renderGridPoints(map);
+        renderMarchingSquares(map);
+//        renderGridPoints(map);
         renderPlayers();
         showScreen();
         auto endTime = std::chrono::high_resolution_clock::now();
         auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
         if (elapsedTime < frameDelay) {std::this_thread::sleep_for(std::chrono::milliseconds(frameDelay - elapsedTime));}
-
     }
 
     void Renderer::renderPlayers() const { // Loops through players and renders them all.
@@ -64,43 +63,76 @@ namespace Renderer {
     void Renderer::renderGridPoints(const std::vector<std::vector<short>>& grid) const {
         // Define colors based on the key
         SDL_Color colors[] = {
-            {255, 255, 255, 255}, // white
-            {255, 0, 0, 255},     // red
-            {0, 0, 255, 255}      // blue
+                {255, 255, 255, 255}, // white  0
+                {255, 0, 0, 255},     // red    1
+                {0, 0, 255, 255}      // blue   2 (unused)
         };
-
-        // Calculate initial position
-        int startX = static_cast<int>((-camera.x / 25) / camera.z);
-        int startY = static_cast<int>((-camera.y / 25) / camera.z);
+        int realStartX = 0; // Origin of map. This will probably always just be 0,0.
+        int realStartY = 0;
 
         // Render points on the screen based on the grid
         for (size_t row = 0; row < grid.size(); ++row) {
             for (size_t col = 0; col < grid[row].size(); ++col) {
-                // Calculate position of the point
-                int x = static_cast<int>((startX + col) * 25 * camera.z + screenWidth / 2);
-                int y = static_cast<int>((startY + row) * 25 * camera.z + screenHeight / 2);
-
-                // Get the color based on the value of the short
-                short value = grid[row][col];
-                SDL_Color color = colors[value];
-
-                // Set the color
+                int pixelX = realToPixelX((realStartX + col) * 25);
+                int pixelY = realToPixelY((realStartY + row) * 25);
+                SDL_Color color = colors[grid[row][col]]; // Choose color based on value of point
                 SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+                SDL_RenderDrawPoint(renderer, pixelX, pixelY);
+            }
+        }
+    }
+    void Renderer::renderMarchingSquares(const std::vector<std::vector<short>>& grid) const {
+        int gridSize = 25; // No clue if this will be changed. Probably a bad place to define it either way.
+        SDL_Rect destRect = { 0, 0, static_cast<int>(gridSize*camera.z +0.5), static_cast<int>(gridSize*camera.z +0.5) }; // Rect to draw all tiles (is just shuffled around each point and redrawn).
+        // Iterate through the grid
+        for (size_t row = 0; row < grid.size() - 1; ++row) {
+            for (size_t col = 0; col < grid[row].size() - 1; ++col) {
+                // Get the value of each corner
+                short topLeft = grid[row][col];
+                short topRight = grid[row][col + 1];
+                short bottomLeft = grid[row + 1][col];
+                short bottomRight = grid[row + 1][col + 1];
 
-                // Render the point
-                SDL_RenderDrawPoint(renderer, x, y);
+                destRect.x = realToPixelX(col*gridSize);
+                destRect.y = realToPixelY(row*gridSize);
+
+                // Work out which texture to use.
+                SDL_Texture* texture = nullptr;
+                switch (topLeft << 3 | topRight << 2 | bottomRight << 1 | bottomLeft) { // Funky binary bullshitery.
+                    case 0b0000: texture = textures->map0000; break;
+                    case 0b0001: texture = textures->map0001; break;
+                    case 0b0010: texture = textures->map0010; break;
+                    case 0b0011: texture = textures->map0011; break;
+                    case 0b0100: texture = textures->map0100; break;
+                    case 0b0101: texture = textures->map0101; break;
+                    case 0b0110: texture = textures->map0110; break;
+                    case 0b0111: texture = textures->map0111; break;
+                    case 0b1000: texture = textures->map1000; break;
+                    case 0b1001: texture = textures->map1001; break;
+                    case 0b1010: texture = textures->map1010; break;
+                    case 0b1011: texture = textures->map1011; break;
+                    case 0b1100: texture = textures->map1100; break;
+                    case 0b1101: texture = textures->map1101; break;
+                    case 0b1110: texture = textures->map1110; break;
+                    case 0b1111: texture = textures->map1111; break;
+                    default: break;
+                }
+
+                // If texture is found, work. Else; Give up.
+                if (texture) {
+                    SDL_RenderCopy(renderer, texture, nullptr, &destRect);
+                }
             }
         }
     }
 
     void Renderer::clearScreen() const {
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 100, 100, 255);
         SDL_RenderClear(renderer);
     }
     void Renderer::showScreen() const {
         SDL_RenderPresent(renderer);
     }
-
 
     // void Renderer::setPlayerMapPtr(std::unordered_map<int, Player> *playerMapPtr) {
     //     this->playerMapPtr = playerMapPtr;
@@ -112,8 +144,7 @@ namespace Renderer {
     }
 
     void Renderer::setCameraPos(float x, float y) {camera.x = x;camera.y = y;}
-    void Renderer::setCameraZoom(float z) {
-        if (z < zoomMax && z > zoomMin) {camera.z = z;}}
+    void Renderer::setCameraZoom(float z) {if (z < zoomMax && z > zoomMin) {camera.z = z;}}
     void Renderer::setCameraPosAndZoom(float x, float y, float z) {camera.x = x;camera.y = y;camera.z = z;}
     void Renderer::setMaxFPS(int maxFPS) {this->maxFPS = maxFPS; frameDelay = 1000 / maxFPS;}
     float Renderer::getCameraPosx() const {return camera.x;}
@@ -131,13 +162,19 @@ namespace Renderer {
             camera.z *= 0.9;
         }
     }
-
     void Renderer::zoomOut() {
         if (camera.z * 1.11111 <= zoomMax) {
             camera.z *= 1.11111;
         }
     }
 
-
+    float Renderer::realToPixelX(float realX) const {
+        int cameraCenterX = screenWidth / 2;
+        return ((realX - camera.x) * camera.z) + cameraCenterX;
+    }
+    float Renderer::realToPixelY(float realY) const {
+        int cameraCenterY = screenHeight / 2;
+        return ((realY - camera.y) * camera.z) + cameraCenterY;
+    }
 
 };
