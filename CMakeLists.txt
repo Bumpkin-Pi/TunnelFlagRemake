@@ -13,35 +13,8 @@ if (WIN32)
 else()
     find_package(SDL2 REQUIRED)
     set(SDL2_IMAGE_LIBRARIES "/lib/libSDL2_image.so") # I dont know why cmake is incapable of finding SDL2_image on its own, but at this point I'm too fed up to bother trying to find out.
-#    set(SDL2_NET_LIBRARIES "/lib/libSDL2_net.so")
+    #    set(SDL2_NET_LIBRARIES "/lib/libSDL2_net.so")
 endif()
 
-# Include SDL2 headers
-
-# Include SDL_image headers
-if (WIN32)
-    include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} include)
-else()
-    include_directories(include)
-endif()
-
-# Set the source files
-set(SOURCE_FILES
-        src/main.cpp
-        src/io/keyboard.cpp
-        src/io/renderer.cpp
-        src/game/entity.cpp
-        src/loadTextures.cpp
-        src/game/game.cpp
-        src/game/player.cpp
-        src/game/map.cpp
-)
-
-# Add the executable and link with SDL2 and SDL_image libraries
-add_executable(TunnelFlagRemake ${SOURCE_FILES})
-
-if (WIN32)
-    target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY})
-else()
-    target_link_libraries(TunnelFlagRemake ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
-endif()
+add_subdirectory(Client)
+add_subdirectory(Server)
