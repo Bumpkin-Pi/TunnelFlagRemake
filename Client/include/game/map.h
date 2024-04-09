@@ -10,11 +10,14 @@
 class Map {
     int rows;
     int columns;
+    int tileSize = 25;
+    std::vector<std::vector<short>> map;
+
+private:
 
     bool isValidPosition(int row, int column) const;
 
 public:
-    std::vector<std::vector<short>> map;
 
     Map(int rows, int columns);
 
@@ -23,8 +26,12 @@ public:
 
     int getRows();
     int getColumns();
+    int getTileSize() const;
+    [[nodiscard]] const std::vector<std::vector<short>> &getMap() const;
+
     void setRows(int rows);
     void setColumns(int columns);
+    void setTileSize(int tileSize);
 };
 
 

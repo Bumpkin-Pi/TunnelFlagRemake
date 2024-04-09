@@ -46,8 +46,12 @@ short generateRandomValue() {
 void randomizeMapValues(Map& map) {
     for (int row = 0; row < map.getRows(); ++row) {
         for (int col = 0; col < map.getColumns(); ++col) {
-            short value = generateRandomValue();
-            map.setValue(row, col, value);
+            if ((col == 0 || col == map.getColumns()) || (row == 0 || row == map.getRows())){
+                map.setValue(row, col, 1);
+            }else{
+                map.setValue(row, col, generateRandomValue());
+
+            }
         }
     }
 }
@@ -72,7 +76,7 @@ int main(int argc, char* argv[]) {
     game.processPacketLines(packet);
     randomizeMapValues(game.map);
     while (!closing) {
-        game.renderer.render(game.map.map);
+        game.renderer.render(game.map);
     }
     physicsThread.join();
     return 0;

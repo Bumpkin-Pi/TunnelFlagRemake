@@ -34,6 +34,21 @@ int Map::getRows() {return rows;}
 void Map::setColumns(int columns) {this->columns = columns;}
 void Map::setRows(int rows) {this->rows = rows;}
 
+int Map::getTileSize() const {
+    return tileSize;
+}
+void Map::setTileSize(int tileSize) {
+    Map::tileSize = tileSize;
+}
+
+const std::vector<std::vector<short>> &Map::getMap() const {
+    return map;
+}
+
+
+
+
+
 
 
 

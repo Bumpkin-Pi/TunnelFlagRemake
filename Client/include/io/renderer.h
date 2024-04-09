@@ -12,7 +12,8 @@
 #endif
 #include <chrono>
 #include <vector>
-#include "../loadTextures.h"
+#include "loadTextures.h"
+#include "game/map.h"
 
 namespace Renderer {
     /*
@@ -38,8 +39,8 @@ namespace Renderer {
 
 
         void clearScreen() const;     // Clear screen buffer
-        void renderGridPoints(const std::vector<std::vector<short>>& grid) const; // Renders values of map (for debuging only)
-        void renderMarchingSquares(const std::vector<std::vector<short>>& grid) const;
+        void renderGridPoints(const Map& map) const; // Renders values of map (for debuging only)
+        void renderMarchingSquares(const Map& map) const;
         void renderPlayers() const;   // Draw players to buffer
         void showScreen() const;      // Show buffer
 
@@ -55,7 +56,7 @@ namespace Renderer {
         ~Renderer();
 
         // Render a frame. (Calls all other rendering functions in order)
-        void render(const std::vector<std::vector<short>>& grid);
+        void render(const Map& map);
 
 
         void setScreenRes(int height, int width);                           // Setters

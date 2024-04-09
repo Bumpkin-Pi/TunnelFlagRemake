@@ -39,7 +39,7 @@ namespace Renderer {
         SDL_Quit();
     }
 
-    void Renderer::render(const std::vector<std::vector<short>>& map) {
+    void Renderer::render(const Map& map) {
         auto startTime = std::chrono::high_resolution_clock::now();
 
         frameCounter++;
@@ -47,7 +47,7 @@ namespace Renderer {
         clearScreen();
         // Draw some shit idk
         renderMarchingSquares(map);
-        renderGridPoints(map);
+//        renderGridPoints(map);
         renderPlayers();
         showScreen();
         auto endTime = std::chrono::high_resolution_clock::now();
@@ -60,7 +60,7 @@ namespace Renderer {
             pair.second.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
         }
     }
-    void Renderer::renderGridPoints(const std::vector<std::vector<short>>& grid) const {
+    void Renderer::renderGridPoints(const Map& map) const {
         // Define colors based on the key
         SDL_Color colors[] = {
                 {255, 255, 255, 255}, // white  0
@@ -71,27 +71,27 @@ namespace Renderer {
         int realStartY = 0;
 
         // Render points on the screen based on the grid
-        for (size_t row = 0; row < grid.size(); ++row) {
-            for (size_t col = 0; col < grid[row].size(); ++col) {
+        for (size_t row = 0; row < map.getMap().size(); ++row) {
+            for (size_t col = 0; col < map.getMap()[row].size(); ++col) {
                 int pixelX = realToPixelX((realStartX + col) * 25);
                 int pixelY = realToPixelY((realStartY + row) * 25);
-                SDL_Color color = colors[grid[row][col]]; // Choose color based on value of point
+                SDL_Color color = colors[map.getMap()[row][col]]; // Choose color based on value of point
                 SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
                 SDL_RenderDrawPoint(renderer, pixelX, pixelY);
             }
         }
     }
-    void Renderer::renderMarchingSquares(const std::vector<std::vector<short>>& grid) const {
+    void Renderer::renderMarchingSquares(const Map& map) const {
         int gridSize = 25; // No clue if this will be changed. Probably a bad place to define it either way.
         SDL_Rect destRect = { 0, 0, static_cast<int>(gridSize*camera.z +0.5), static_cast<int>(gridSize*camera.z +0.5) }; // Rect to draw all tiles (is just shuffled around each point and redrawn).
         // Iterate through the grid
-        for (size_t row = 0; row < grid.size() - 1; ++row) {
-            for (size_t col = 0; col < grid[row].size() - 1; ++col) {
+        for (size_t row = 0; row < map.getMap().size() - 1; ++row) {
+            for (size_t col = 0; col < map.getMap()[row].size() - 1; ++col) {
                 // Get the value of each corner
-                short topLeft = grid[row][col];
-                short topRight = grid[row][col + 1];
-                short bottomLeft = grid[row + 1][col];
-                short bottomRight = grid[row + 1][col + 1];
+                short topLeft = map.getMap()[row][col];
+                short topRight = map.getMap()[row][col + 1];
+                short bottomLeft = map.getMap()[row + 1][col];
+                short bottomRight = map.getMap()[row + 1][col + 1];
 
                 destRect.x = realToPixelX(col*gridSize);
                 destRect.y = realToPixelY(row*gridSize);

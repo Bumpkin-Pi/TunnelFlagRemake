@@ -96,18 +96,16 @@ void Game::processPacketLines(const std::string& packetLines) {
 
 void Game::processKeyboard(Keyboard::KeyboardInput keyboard) {
     // Might be smart to just store the getPlayerByID(selfID) pointer rather than rerunning it every time
-
+    float playerSpeed = 3;
     if (keyboard.isUpScroll()) {renderer.zoomOut();             //This whole movement system should probably be reworked
     } else if (keyboard.isDownScroll()) {renderer.zoomIn();}
-    if (keyboard.getState(keyboard.keybinds.PlayerUp)) {getPlayerByID(selfID)->setVelocityY(-1);; // Move up
-    } else if (keyboard.getState(keyboard.keybinds.PlayerDown)) {getPlayerByID(selfID)->setVelocityY(1);; // Move down
+    if (keyboard.getState(keyboard.keybinds.PlayerUp)) {getPlayerByID(selfID)->setVelocityY(-playerSpeed);; // Move up
+    } else if (keyboard.getState(keyboard.keybinds.PlayerDown)) {getPlayerByID(selfID)->setVelocityY(playerSpeed);; // Move down
     } else {getPlayerByID(selfID)->setVelocityY(0);} // No movement
-    if (keyboard.getState(keyboard.keybinds.PlayerLeft)) {getPlayerByID(selfID)->setVelocityX(-1); // Move left
-    } else if (keyboard.getState(keyboard.keybinds.PlayerRight)) {getPlayerByID(selfID)->setVelocityX(1); // Move right
+    if (keyboard.getState(keyboard.keybinds.PlayerLeft)) {getPlayerByID(selfID)->setVelocityX(-playerSpeed); // Move left
+    } else if (keyboard.getState(keyboard.keybinds.PlayerRight)) {getPlayerByID(selfID)->setVelocityX(playerSpeed); // Move right
     } else {getPlayerByID(selfID)->setVelocityX(0);} // No movement
     if (keyboard.getState(keyboard.keybinds.cameraToPlayer)) {
-        renderer.setCameraPos(getPlayerByID(selfID)->getPosx(), getPlayerByID(selfID)->getPosy());
-    }
-
+        renderer.setCameraPos(getPlayerByID(selfID)->getPosx(), getPlayerByID(selfID)->getPosy());}
 }
 
