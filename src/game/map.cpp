@@ -2,7 +2,7 @@
 // Created by holly on 24/03/24.
 //
 
-#include "map.h"
+#include "game/map.h"
 #include <iostream>
 
 extern bool debugOutput;

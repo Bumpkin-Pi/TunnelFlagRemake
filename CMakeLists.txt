@@ -20,26 +20,21 @@ endif()
 
 # Include SDL_image headers
 if (WIN32)
-    include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR})
+    include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} include)
+else()
+    include_directories(include)
 endif()
 
 # Set the source files
 set(SOURCE_FILES
         src/main.cpp
         src/io/keyboard.cpp
-        src/io/keyboard.h
         src/io/renderer.cpp
-        src/io/renderer.h
         src/game/entity.cpp
-        src/game/entity.h
         src/loadTextures.cpp
-        src/loadTextures.h
         src/game/game.cpp
-        src/game/game.h
         src/game/player.cpp
-        src/game/player.h
         src/game/map.cpp
-        src/game/map.h
 )
 
 # Add the executable and link with SDL2 and SDL_image libraries

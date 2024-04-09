@@ -4,7 +4,7 @@
 
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "entity.h"
+#include "game/entity.h"
 #ifdef __linux__
 #include <SDL2/SDL_image.h>
 #elif _WIN32

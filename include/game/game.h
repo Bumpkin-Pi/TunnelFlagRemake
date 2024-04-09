@@ -8,11 +8,11 @@
 #include <unordered_map>
 #include <sstream>
 
-#include "../loadTextures.h"
-#include "../io/keyboard.h"
-#include "../io/renderer.h"
-#include "map.h"
-#include "player.h"
+#include "loadTextures.h"
+#include "io/keyboard.h"
+#include "io/renderer.h"
+#include "game/map.h"
+#include "game/player.h"
 extern int screenWidth;
 extern int screenHeight;
 
@@ -28,7 +28,6 @@ class Game {
 
     Textures textures{};
     int selfID = 012;
-
 
 public:
     // Map of all players. (Basically just a list but fast)

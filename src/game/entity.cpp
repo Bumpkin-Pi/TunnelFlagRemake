@@ -2,8 +2,8 @@
 // Created by holly on 13/03/24.
 //
 
-#include "entity.h"
-#include "../io/renderer.h"
+#include "game/entity.h"
+#include "../../include/io/renderer.h"
 
 Entity::Entity(SDL_Texture* sprite, float x, float y, int width, int height)
         : sprite(sprite), x(x), y(y), width(width), height(height), vx(0), vy(0){

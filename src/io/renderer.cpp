@@ -2,8 +2,8 @@
 // Created by holly on 13/03/24.
 //
 
-#include "renderer.h"
-#include "../game/game.h"
+#include "io/renderer.h"
+#include "game/game.h"
 
 #include <iostream>
 #include <chrono>
@@ -47,7 +47,7 @@ namespace Renderer {
         clearScreen();
         // Draw some shit idk
         renderMarchingSquares(map);
-//        renderGridPoints(map);
+        renderGridPoints(map);
         renderPlayers();
         showScreen();
         auto endTime = std::chrono::high_resolution_clock::now();

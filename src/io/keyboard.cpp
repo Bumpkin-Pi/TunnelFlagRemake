@@ -2,7 +2,7 @@
 // Created by holly on 10/03/24.
 //
 
-#include "keyboard.h"
+#include "io/keyboard.h"
 extern bool closing;
 
 namespace Keyboard {
