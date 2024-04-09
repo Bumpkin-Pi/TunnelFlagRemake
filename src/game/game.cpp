@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include "game/game.h"
-#include "../../include/io/renderer.h"
 extern bool debugOutput;
 
 Game::Game(){

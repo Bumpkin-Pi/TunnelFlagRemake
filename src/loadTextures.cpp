@@ -9,7 +9,6 @@
 #include <SDL_image.h>
 #else
 #endif
-#include <iostream>
 
 Textures LoadTextures(SDL_Renderer *renderer) {
     Textures textures{};
