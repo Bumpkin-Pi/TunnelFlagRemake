@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.27.8)
 project(TunnelFlagRemake)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 # Find SDL2 package
 if (WIN32)
     set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake_modules)
-    set(SDL2_PATH "YOURSDL2DIRECTORYHERE!!!!!!/x86_64-w64-mingw32")
-    set(SDL2_IMAGE_PATH "YOURSDL2_IMAGEDIRECTORYHERE!!!!/x86_64-w64-mingw32")
+    set(SDL2_PATH "YOURSDL2DIRECTORYHERE/x86_64-w64-mingw32")
+    set(SDL2_IMAGE_PATH "YOURSDL2_IMAGEDIRECTORYHERE/x86_64-w64-mingw32")
     find_package(SDL2 REQUIRED)
     find_package(SDL2_image REQUIRED)
 else()
