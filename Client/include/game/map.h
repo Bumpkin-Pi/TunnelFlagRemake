@@ -13,8 +13,6 @@ class Map {
     int tileSize = 25;
     std::vector<std::vector<short>> map;
 
-private:
-
     bool isValidPosition(int row, int column) const;
 
 public:

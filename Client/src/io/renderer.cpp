@@ -39,7 +39,7 @@ namespace Renderer {
         SDL_Quit();
     }
 
-    void Renderer::render(const Map& map) {
+    void Renderer::render(Map& map) {
         auto startTime = std::chrono::high_resolution_clock::now();
 
         frameCounter++;
@@ -60,7 +60,7 @@ namespace Renderer {
             pair.second.render(renderer, camera.x, camera.y, camera.z, screenWidth, screenHeight);
         }
     }
-    void Renderer::renderGridPoints(const Map& map) const {
+    void Renderer::renderGridPoints(Map& map) const {
         // Define colors based on the key
         SDL_Color colors[] = {
                 {255, 255, 255, 255}, // white  0
@@ -81,8 +81,9 @@ namespace Renderer {
             }
         }
     }
-    void Renderer::renderMarchingSquares(const Map& map) const {
-        int gridSize = 25; // No clue if this will be changed. Probably a bad place to define it either way.
+    void Renderer::renderMarchingSquares(Map& map) const {
+        int gridSize = map.getTileSize(); // No clue if this will be changed. Probably a bad place to define it either way.
+        renderMapBackground(realToPixelX(0), realToPixelY(0), (map.getColumns()-1)*gridSize*camera.z, (map.getRows()-1)*gridSize*camera.z);
         SDL_Rect destRect = { 0, 0, static_cast<int>(gridSize*camera.z +0.5), static_cast<int>(gridSize*camera.z +0.5) }; // Rect to draw all tiles (is just shuffled around each point and redrawn).
         // Iterate through the grid
         for (size_t row = 0; row < map.getMap().size() - 1; ++row) {
@@ -125,9 +126,19 @@ namespace Renderer {
             }
         }
     }
+    void Renderer::renderMapBackground(int startX, int startY, int width, int height) const {
+        SDL_Rect backgroundRect = {startX, startY, width, height};
+        backgroundRect.x = startX;
+        backgroundRect.y = startY;
+        backgroundRect.w = width;
+        backgroundRect.h = height;
+        SDL_SetRenderDrawColor(renderer, 94, 95, 100, 255);
+        SDL_RenderFillRect(renderer, &backgroundRect);
+    }
+
 
     void Renderer::clearScreen() const {
-        SDL_SetRenderDrawColor(renderer, 0, 100, 100, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 100, 100, 255); // 33, 33, 33 for same as background.
         SDL_RenderClear(renderer);
     }
     void Renderer::showScreen() const {
@@ -176,5 +187,6 @@ namespace Renderer {
         int cameraCenterY = screenHeight / 2;
         return ((realY - camera.y) * camera.z) + cameraCenterY;
     }
+
 
 };

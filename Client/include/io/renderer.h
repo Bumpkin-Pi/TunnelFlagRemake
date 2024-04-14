@@ -39,8 +39,9 @@ namespace Renderer {
 
 
         void clearScreen() const;     // Clear screen buffer
-        void renderGridPoints(const Map& map) const; // Renders values of map (for debuging only)
-        void renderMarchingSquares(const Map& map) const;
+        void renderGridPoints(Map& map) const; // Renders values of map (for debuging only)
+        void renderMarchingSquares(Map& map) const; // Use marching squares algorithm to display map
+        void renderMapBackground(int startX, int startY, int width, int height) const; // Display background of map (called in renderMarchingSquares())
         void renderPlayers() const;   // Draw players to buffer
         void showScreen() const;      // Show buffer
 
@@ -56,7 +57,7 @@ namespace Renderer {
         ~Renderer();
 
         // Render a frame. (Calls all other rendering functions in order)
-        void render(const Map& map);
+        void render(Map& map);
 
 
         void setScreenRes(int height, int width);                           // Setters

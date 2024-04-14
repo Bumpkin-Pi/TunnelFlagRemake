@@ -46,11 +46,10 @@ short generateRandomValue() {
 void randomizeMapValues(Map& map) {
     for (int row = 0; row < map.getRows(); ++row) {
         for (int col = 0; col < map.getColumns(); ++col) {
-            if ((col == 0 || col == map.getColumns()) || (row == 0 || row == map.getRows())){
+            if ((col == 0 || col == map.getColumns() - 1) || (row == 0 || row == map.getRows() - 1)){
                 map.setValue(row, col, 1);
             }else{
                 map.setValue(row, col, generateRandomValue());
-
             }
         }
     }
