@@ -45,9 +45,9 @@ public:
     // Removes a player with given ID from playerMap
     void removePlayerByID(int id);
     // Processes indevidual lines of packets
-    void processSubpacket(const std::string& subpacketLine);
+    void processPacketLine(const std::string& packetLine);
     // Processes a full string of packet lines
-    void processPacketLines(const std::string& packetLines);
+    void processPacketString(const std::string& packet);
     // Updates player position etc based on keyboard input.
     void processKeyboard(Keyboard::KeyboardInput keyboard);
     // Currently just updates all player positiones based on their velocity

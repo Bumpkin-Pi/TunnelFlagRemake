@@ -26,11 +26,11 @@ namespace Renderer {
         SDL_SetWindowTitle(window, "Tunnel Flag");
 
         // Load player texture
-        SDL_Texture* texture = IMG_LoadTexture(renderer, "../textures/player1.png"); //TODO: fix relative dirs.
-        if (!texture) {
-            std::cerr << "Failed to load player texture: " << SDL_GetError() << std::endl;
-            // Handle error
-        }
+//        SDL_Texture* texture = IMG_LoadTexture(renderer, "../textures/player1.png"); //TODO: fix relative dirs.
+//        if (!texture) {
+//            std::cerr << "Failed to load player texture: " << SDL_GetError() << std::endl;
+//             Handle error
+//        }
 
     }
     Renderer::~Renderer() {

@@ -3,7 +3,8 @@
 //
 
 #include <iostream>
-
+#include <vector>
+#include <sstream>
 #include "game/game.h"
 extern bool debugOutput;
 
@@ -12,9 +13,9 @@ Game::Game(){
     textures = LoadTextures(renderer.renderer); // Loads textures from textures folder
     renderer.textures = &textures; // Janky as balls :).
     addPlayerByID(selfID, Player{1, 0, 0, textures.player1, "uwuslayer123"}); // Debug players.
-    addPlayerByID(22, Player{2, 100, 50, textures.player2, "I am very cool"});
+//    addPlayerByID(22, Player{2, 100, 50, textures.player2, "I am very cool"});
 }
-Game::~Game() {UnloadTextures(textures);} // For some reason, when I bother to delete the textures, it gets angry at me, so idk.
+Game::~Game() {UnloadTextures(textures);}
 
 
 
@@ -23,7 +24,7 @@ Player *Game::getPlayerByID(int id) {
     if (player != playerMap.end()) {
         return &(player->second); // First/Second instead of key/value for some reason.
     }
-    return nullptr;
+    return nullptr; // This needs better error catching
 }
 void Game::removePlayerByID(int id) {
     auto player = playerMap.find(id);
@@ -42,55 +43,70 @@ void Game::clientUpdate() {
 }
 
 
-void Game::processSubpacket(const std::string& subpacketLine) {
-    std::istringstream iss(subpacketLine);
-    std::string packetType;
-    std::getline(iss, packetType, ':');
-
-    if (packetType == "PLAYERMESSAGE") {
-        // Parse player message subpacket
-        std::string idStr, message;
-        std::getline(iss, idStr, ',');
-        std::getline(iss, message);
-
-        int id = std::stoi(idStr);
-        Player* player = getPlayerByID(id);
-        if (player) {
-            std::cout << "Player " << player->getUsername() << " says: " << message << std::endl;
-        } else {
-            if (debugOutput) {std::cerr << "Player with ID " << id << " not found." << std::endl;}
+void Game::processPacketLine(const std::string& packetLine) {
+    try{
+        std::istringstream iss(packetLine);
+        std::vector<std::string> values;
+        while (iss.good()){
+            std::string substr;
+            std::getline(iss, substr, ',');
+            values.push_back(substr);
         }
-    } else if (packetType == "PLAYERMOVE") {
-        // Parse player move subpacket
-        int id;
-        float x, y, vx, vy;
-        char comma;
-        iss >> id >> comma >> x >> comma >> y >> comma >> vx >> comma >> vy;
-
-
-        Player* player = getPlayerByID(id);
-        if (player) {
-            if (debugOutput) {
-                std::cout << "Player " << player->getUsername() << " moved to ("
-                      << x << ", " << y << ") with velocity (" << vx << ", " << vy << ")" << std::endl;
+        switch (std::stoi(values[0])){
+            case 0: {                                                               // CONNECT: 0, UUID, team, x,y, idk what else
+                break;
             }
-            player->setPos(x, y);
-            player->setVelocityX(vx); // TODO: Proper getters and setters for velocity, as well as username.
-            player->setVelocityY(vy);
-        } else {
-            if (debugOutput) {std::cerr << "Player with ID " << id << " not found." << std::endl;}
+            case 1: {                                                               // NEWPLAYERJOIN: 1, UUID, team, username, x,y
+                int uuid = std::stoi(values[1]);
+                int team = std::stoi(values[2]);
+                addPlayerByID(uuid, Player{team, std::stof(values[4]), std::stof(values[5]), team == 1 ? textures.player1 : textures.player2, values[3]});
+                break;
+            }
+            case 2: {                                                               // GAMEINIT: 2, idfk, teams n such ig.
+                break;
+            }
+            case 3: {                                                               // MAPUPDATE: 3, map stuff.
+                break;
+            }
+            case 4: {                                                               // PLAYERMOVE: 4, UUID, x,y, vx,vy
+                int uuid = std::stoi(values[1]);
+                float x = std::stof(values[2]), y = std::stof(values[3]);
+                float vx = std::stof(values[2]), vy = std::stof(values[3]);
+                getPlayerByID(uuid)->setPos(x, y);
+                getPlayerByID(uuid)->setVelocity(vx, vy);
+                break;
+            }
+            case 5:{                                                                // PLAYERMESSAGE: 5, UUID, message
+                int uuid = std::stoi(values[1]);
+                std::cout << getPlayerByID(uuid)->getUsername() << ": " << values[2] << std::endl;
+                break;
+            }
+            default:{
+                std::cout << "Unknown packet line detected: " << packetLine << std::endl;
+            }
         }
-    } else {
-        std::cerr << "Unknown packet type: " << packetType << std::endl;
+    }catch (std::exception& e)
+    {
+        std::cerr << "Exception caught : " << e.what() << std::endl;
     }
+
 }
-void Game::processPacketLines(const std::string& packetLines) {
-    std::istringstream iss(packetLines);
-    std::string line;
-    while (std::getline(iss, line)) {
-        if (!line.empty()) {
-            processSubpacket(line);
-        }
+
+void Game::processPacketString(const std::string& packet) {
+    std::vector<std::string> lines;
+    std::stringstream iss(packet);
+    std::string SingleLine;
+    while(iss.good())
+    {
+        getline(iss,SingleLine,'\n');
+        lines.push_back(SingleLine);
+    }
+
+    // Do shit with first line for verification;
+//    lines.erase(lines.begin()); // Remove first line, currently not used.
+
+    for (const std::string& line : lines){
+        if (!line.empty()) processPacketLine(line);
     }
 }
 

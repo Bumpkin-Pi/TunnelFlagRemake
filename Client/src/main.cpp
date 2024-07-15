@@ -70,9 +70,8 @@ int main(int argc, char* argv[]) {
 
     std::thread physicsThread(&physicsThreadFunction);
 
-    const std::string packet = "PLAYERMESSAGE:22,Hello world\n"
-                                "PLAYERMOVE:22,34,678.7,-1,0";
-    game.processPacketLines(packet);
+    const std::string packet = "1, 100, 2, hiImANewPlayer, 0, 0.1\n 4, 100, 50, 0, 0, 4\n5, 100, fuuuuuuckofffrfrnocap UwU";
+    game.processPacketString(packet);
     randomizeMapValues(game.map);
     while (!closing) {
         game.renderer.render(game.map);
