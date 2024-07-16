@@ -5,6 +5,7 @@
 
 #include "io/keyboard.h"
 #include "game/game.h"
+#include "debugFunctions.h"
 
 int screenWidth = 1680;     // Determins starting screen resolution.
 int screenHeight = 1050;
@@ -26,34 +27,17 @@ void physicsThreadFunction() {
             std::this_thread::sleep_for(std::chrono::milliseconds(targetFrameTime - elapsedTime));
         }
 
-        game.clientUpdate();
-        game.processKeyboard(keyboardInput);
+        game.gameTick();
         // Update logic
         keyboardInput.update();
+        game.processKeyboard(keyboardInput);
 
         // Update last frame time
         lastFrameTime = std::chrono::high_resolution_clock::now();
     }
 }
 
-// Debug functions for testing map ----
-short generateRandomValue() {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<short> dist(0, 1); // Adjust range as needed
-    return dist(gen);
-}
-void randomizeMapValues(Map& map) {
-    for (int row = 0; row < map.getRows(); ++row) {
-        for (int col = 0; col < map.getColumns(); ++col) {
-            if ((col == 0 || col == map.getColumns() - 1) || (row == 0 || row == map.getRows() - 1)){
-                map.setValue(row, col, 1);
-            }else{
-                map.setValue(row, col, generateRandomValue());
-            }
-        }
-    }
-}
+
 // -------------
 
 int main(int argc, char* argv[]) {
@@ -67,10 +51,10 @@ int main(int argc, char* argv[]) {
     }
 
     std::cout << "\nStarting TunnelFlag...\n";
-
+    SDL_Init(SDL_INIT_EVERYTHING);
     std::thread physicsThread(&physicsThreadFunction);
 
-    const std::string packet = "1, 100, 2, hiImANewPlayer, 0, 0.1\n 4, 100, 50, 0, 0, 4\n5, 100, fuuuuuuckofffrfrnocap UwU";
+    const std::string packet = "1, 100, 2, hiImANewPlayer, 0, 0.1\n 4, 100, 50, 0, 0, 4\n5, 100, Hello world";
     game.processPacketString(packet);
     randomizeMapValues(game.map);
     while (!closing) {

@@ -20,7 +20,6 @@ namespace Renderer {
         setMaxFPS(maxFPS);
 
         // Initialize SDL and create window/renderer
-        SDL_Init(SDL_INIT_VIDEO);
         SDL_CreateWindowAndRenderer(screenWidth, screenHeight, 0, &window, &renderer);
         SDL_RenderSetScale(renderer, 1, 1);
         SDL_SetWindowTitle(window, "Tunnel Flag");

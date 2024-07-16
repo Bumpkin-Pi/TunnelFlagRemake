@@ -12,7 +12,7 @@ Game::Game(){
     map = Map(100, 200);
     textures = LoadTextures(renderer.renderer); // Loads textures from textures folder
     renderer.textures = &textures; // Janky as balls :).
-    addPlayerByID(selfID, Player{1, 0, 0, textures.player1, "uwuslayer123"}); // Debug players.
+//    addPlayerByID(selfID, Player{1, 0, 0, textures.player1, "uwuslayer123"}); // Debug players.
 //    addPlayerByID(22, Player{2, 100, 50, textures.player2, "I am very cool"});
 }
 Game::~Game() {UnloadTextures(textures);}
@@ -36,12 +36,11 @@ void Game::addPlayerByID(int id, Player player) {
     playerMap.emplace(id, player);
 }
 
-void Game::clientUpdate() {
+void Game::playerUpdate() {
     for (auto& pair : playerMap) {
         pair.second.update();
     }
 }
-
 
 void Game::processPacketLine(const std::string& packetLine) {
     try{
@@ -54,12 +53,14 @@ void Game::processPacketLine(const std::string& packetLine) {
         }
         switch (std::stoi(values[0])){
             case 0: {                                                               // CONNECT: 0, UUID, team, x,y, idk what else
+                selfID = std::stoi(values[1]);
+                addPlayerByID(selfID, Player(std::stoi(values[2]), 0, 0, textures.player1, "MyUsername"));
                 break;
             }
-            case 1: {                                                               // NEWPLAYERJOIN: 1, UUID, team, username, x,y
+            case 1: {                                                               // NEWPLAYERJOIN: 1, UUID, team, username
                 int uuid = std::stoi(values[1]);
                 int team = std::stoi(values[2]);
-                addPlayerByID(uuid, Player{team, std::stof(values[4]), std::stof(values[5]), team == 1 ? textures.player1 : textures.player2, values[3]});
+                addPlayerByID(uuid, Player{team, 0, 0, team == 1 ? textures.player1 : textures.player2, values[3]});
                 break;
             }
             case 2: {                                                               // GAMEINIT: 2, idfk, teams n such ig.
@@ -113,6 +114,7 @@ void Game::processPacketString(const std::string& packet) {
 void Game::processKeyboard(Keyboard::KeyboardInput keyboard) {
     // Might be smart to just store the getPlayerByID(selfID) pointer rather than rerunning it every time
     float playerSpeed = 3;
+    if (selfID == -1) return;
     if (keyboard.isUpScroll()) {renderer.zoomOut();             //This whole movement system should probably be reworked
     } else if (keyboard.isDownScroll()) {renderer.zoomIn();}
     if (keyboard.getState(keyboard.keybinds.PlayerUp)) {getPlayerByID(selfID)->setVelocityY(-playerSpeed);; // Move up
@@ -123,5 +125,12 @@ void Game::processKeyboard(Keyboard::KeyboardInput keyboard) {
     } else {getPlayerByID(selfID)->setVelocityX(0);} // No movement
     if (keyboard.getState(keyboard.keybinds.cameraToPlayer)) {
         renderer.setCameraPos(getPlayerByID(selfID)->getPosx(), getPlayerByID(selfID)->getPosy());}
+}
+
+void Game::gameTick() {
+    // Keyboard processing happens in main.cpp.
+    // Deal with packet buffer.
+    playerUpdate();
+
 }
 

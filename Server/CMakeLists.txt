@@ -6,7 +6,7 @@ endif()
 
 # Set the source files
 set(SOURCE_FILES
-        main.cpp
+        src/main.cpp
 )
 
 # Add the executable and link with SDL2 and SDL_image libraries

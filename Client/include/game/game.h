@@ -13,6 +13,7 @@
 #include "io/renderer.h"
 #include "game/map.h"
 #include "game/player.h"
+#include "network/client.h"
 extern int screenWidth;
 extern int screenHeight;
 
@@ -27,13 +28,14 @@ Should generally be under the control of the server, with little actual gameplay
 class Game {
 
     Textures textures{};
-    int selfID = 012;
+    int selfID = -1;
 
 public:
-    // Map of all players. (Basically just a list but fast)
+    // Map of all players.
     std::unordered_map<int, Player> playerMap;
     Map map{0, 0};
     Renderer::Renderer renderer{0, 0, 1, screenWidth, screenHeight, 60};
+    Client client{}; // Network manager
 
     Game();
     ~Game();
@@ -51,7 +53,11 @@ public:
     // Updates player position etc based on keyboard input.
     void processKeyboard(Keyboard::KeyboardInput keyboard);
     // Currently just updates all player positiones based on their velocity
-    void clientUpdate();
+    void playerUpdate();
+    // Full tick update. Should be run 60 times a second.
+    void gameTick();
+
+
 
 };
 
