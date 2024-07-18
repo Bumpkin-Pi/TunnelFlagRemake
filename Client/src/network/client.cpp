@@ -39,7 +39,17 @@ void Client::listener() {
 
 void Client::send() {
     std::unique_lock<std::mutex> sendLock(sendMutex);
-    SDLNet_TCP_Send(client, sendBuffer.c_str(), strlen(sendBuffer.c_str()));
+    std::string send = sendBuffer;
     sendBuffer = "";
     sendLock.unlock();
+    try{
+        SDLNet_TCP_Send(client, send.c_str(), strlen(send.c_str()));
+    }catch(...){}
 }
+
+void Client::addToSendBuffer(std::string packet) {
+    std::unique_lock<std::mutex> sendLock(sendMutex);
+    sendBuffer += packet;
+    sendLock.unlock();
+}
+

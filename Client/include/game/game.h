@@ -49,7 +49,7 @@ public:
     // Processes indevidual lines of packets
     void processPacketLine(const std::string& packetLine);
     // Processes a full string of packet lines
-    void processPacketString(const std::string& packet);
+    void processPacketString();
     // Updates player position etc based on keyboard input.
     void processKeyboard(Keyboard::KeyboardInput keyboard);
     // Currently just updates all player positiones based on their velocity
