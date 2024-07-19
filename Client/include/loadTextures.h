@@ -15,22 +15,7 @@ struct Textures {
     SDL_Texture* player1;
     SDL_Texture* player2;
     SDL_Texture* background;
-    SDL_Texture* map0000;
-    SDL_Texture* map0001;
-    SDL_Texture* map0010;
-    SDL_Texture* map0011;
-    SDL_Texture* map0100;
-    SDL_Texture* map0101;
-    SDL_Texture* map0110;
-    SDL_Texture* map0111;
-    SDL_Texture* map1000;
-    SDL_Texture* map1001;
-    SDL_Texture* map1010;
-    SDL_Texture* map1011;
-    SDL_Texture* map1100;
-    SDL_Texture* map1101;
-    SDL_Texture* map1110;
-    SDL_Texture* map1111;
+    SDL_Texture* mapTextures[16];
 };
 
 // Loads textures into memory. Textures should be added to this and Textures struct manually.

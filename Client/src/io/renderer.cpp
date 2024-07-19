@@ -101,26 +101,7 @@ namespace Renderer {
 
                 // Work out which texture to use.
                 SDL_Texture* texture = nullptr;
-                switch (topLeft << 3 | topRight << 2 | bottomRight << 1 | bottomLeft) { // Funky binary bullshitery.
-                    case 0b0000: texture = textures->map0000; break;
-                    case 0b0001: texture = textures->map0001; break;
-                    case 0b0010: texture = textures->map0010; break;
-                    case 0b0011: texture = textures->map0011; break;
-                    case 0b0100: texture = textures->map0100; break;
-                    case 0b0101: texture = textures->map0101; break;
-                    case 0b0110: texture = textures->map0110; break;
-                    case 0b0111: texture = textures->map0111; break;
-                    case 0b1000: texture = textures->map1000; break;
-                    case 0b1001: texture = textures->map1001; break;
-                    case 0b1010: texture = textures->map1010; break;
-                    case 0b1011: texture = textures->map1011; break;
-                    case 0b1100: texture = textures->map1100; break;
-                    case 0b1101: texture = textures->map1101; break;
-                    case 0b1110: texture = textures->map1110; break;
-                    case 0b1111: texture = textures->map1111; break;
-                    default: break;
-                }
-
+                texture = textures->mapTextures[topLeft << 3 | topRight << 2 | bottomRight << 1 | bottomLeft];
                 // If texture is found, work. Else; Give up.
                 if (texture) {
                     SDL_RenderCopy(renderer, texture, nullptr, &destRect);
