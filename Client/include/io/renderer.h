@@ -32,11 +32,9 @@ namespace Renderer {
         int screenWidth=0,screenHeight=0; // Screen resolution.
         int maxFPS = 60; // Max FPS.
         int frameDelay = 1000 / maxFPS; // milliseconds per frame
-        float zoomMax = 10, zoomMin = 0.005; // Boundaries for how the camera zoom can be changed.
+        float zoomMax = 10, zoomMin = 0.75; // Boundaries for how the camera zoom can be changed.
         std::chrono::high_resolution_clock::time_point HstartTime = std::chrono::high_resolution_clock::now(); //Time used for 100frames average calc
         int frameCounter = 0; // Indexes for ever frame rendered.
-
-
 
         void clearScreen() const;     // Clear screen buffer
         void renderGridPoints(Map& map) const; // Renders values of map (for debuging only)
@@ -80,8 +78,14 @@ namespace Renderer {
         int getScreenWidth() const;
         int getScreenHeight() const;
 
+        // Converts point in space to point on screen (x)
         float realToPixelX(float realX) const;
+        // Converts point in space to point on screen (y)
         float realToPixelY(float realY) const;
+        // Converts point on screen to point in space (x)
+        float pixelToRealX(float pixelX) const;
+        // Converts point on screen to point in space (y)
+        float pixelToRealY(float pixelY) const;
     };
 
 

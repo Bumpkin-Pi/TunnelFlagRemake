@@ -12,7 +12,7 @@
 #endif
 
 
-
+//TODO: this entire structure needs reworked.
 
 namespace Keyboard {
 
@@ -26,26 +26,36 @@ namespace Keyboard {
     };
 
 
+
     class KeyboardInput {
     private:
         const Uint8* state = SDL_GetKeyboardState(nullptr);
-        bool leftClick=false,rightClick=false,upScroll=false,downScroll=false;
+        bool leftClick=false,rightClick=false,upScroll=false,downScroll=false,space=false, leftClickHeld=false, rightClickHeld=false;
+        int mouseX,mouseY;
 
     public:
         Keybinds keybinds;
-        //
+
         void update();
 
         // Returns true if left mouse was pressed last update() (not if held)
         [[nodiscard]] bool isLeftClick() const;
         // Returns true if right mouse was pressed last update() (not if held)
         [[nodiscard]] bool isRightClick() const;
+        // Returns true if left mouse is held.
+        [[nodiscard]] bool isLeftClickHeld() const;
         // checks if key was pressed at time of last update().
         [[nodiscard]] bool getState(SDL_Scancode key) const;
         // Returns true if scrollwheel was ticked up last frame.
         [[nodiscard]] bool isUpScroll () const;
         // Returns true if scrollwheel was ticked down last frame.
         [[nodiscard]] bool isDownScroll () const;
+        // Return true if space was pressed in last frame.
+        [[nodiscard]] bool isSpace() const;
+        // Return mouse x;
+        [[nodiscard]] int getMouseX() const;
+        // Return mouse Y
+        [[nodiscard]] int getMouseY() const;
     };
 
 

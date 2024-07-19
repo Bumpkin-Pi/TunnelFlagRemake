@@ -101,13 +101,15 @@ namespace Renderer {
 
                 // Work out which texture to use.
                 SDL_Texture* texture = nullptr;
-                texture = textures->mapTextures[topLeft << 3 | topRight << 2 | bottomRight << 1 | bottomLeft];
+
+                texture = textures->mapTexturesSingle[topLeft << 3 | topRight << 2 | bottomRight << 1 | bottomLeft];
                 // If texture is found, work. Else; Give up.
                 if (texture) {
                     SDL_RenderCopy(renderer, texture, nullptr, &destRect);
                 }
             }
         }
+
     }
     void Renderer::renderMapBackground(int startX, int startY, int width, int height) const {
         SDL_Rect backgroundRect = {startX, startY, width, height};
@@ -170,6 +172,17 @@ namespace Renderer {
         int cameraCenterY = screenHeight / 2;
         return ((realY - camera.y) * camera.z) + cameraCenterY;
     }
+
+    float Renderer::pixelToRealX(float pixelX) const {
+        int cameraCenterX = screenWidth / 2;
+        return ((pixelX - cameraCenterX) / camera.z) + camera.x;
+    }
+    float Renderer::pixelToRealY(float pixelY) const {
+        int cameraCenterY = screenHeight / 2;
+        return ((pixelY - cameraCenterY) / camera.z) + camera.y;
+    }
+
+
 
 
 };

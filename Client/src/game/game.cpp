@@ -11,13 +11,12 @@ extern bool debugOutput;
 extern bool closing;
 
 Game::Game() {
-    map = Map(140, 280);
+    map = Map(250, 500);
     textures = LoadTextures(renderer.renderer); // Loads textures from textures folder
     renderer.textures = &textures; // Janky as balls :).
 //    addPlayerByID(selfID, Player{1, 0, 0, textures.player1, "uwuslayer123"}); // Debug players.
 //    addPlayerByID(22, Player{2, 100, 50, textures.player2, "I am very cool"});
 }
-
 Game::~Game() { UnloadTextures(textures); }
 
 
@@ -28,18 +27,18 @@ Player *Game::getPlayerByID(int id) {
     }
     return nullptr; // This needs better error catching
 }
-
+Player *Game::getSelfPlayer() {
+    return selfPlayer;
+}
 void Game::removePlayerByID(int id) {
     auto player = playerMap.find(id);
     if (player != playerMap.end()) {
         playerMap.erase(player);
     } else if (debugOutput) { std::cout << "Failed to remove player by ID: " << id << "\n"; }
 }
-
 void Game::addPlayerByID(int id, Player player) {
     playerMap.emplace(id, player);
 }
-
 void Game::playerUpdate() {
     for (auto &pair: playerMap) {
         pair.second.update();
@@ -60,6 +59,7 @@ void Game::processPacketLine(const std::string &packetLine) {
         case 0: {                                                               // CONNECT: 0, UUID, team, x,y, idk what else
             selfID = std::stoi(values[1]);
             addPlayerByID(selfID, Player(std::stoi(values[2]), 0, 0, textures.player1, "MyUsername"));
+            selfPlayer = getPlayerByID(selfID);
             break;
         }
         case 1: {                                                               // NEWPLAYERJOIN: 1, UUID, team, username
@@ -96,7 +96,6 @@ void Game::processPacketLine(const std::string &packetLine) {
         }
     }
 }
-
 void Game::processPacketString() {
     std::unique_lock<std::mutex> recvLock(client.recvMutex);
     std::string packet = client.recvBuffer;
@@ -123,22 +122,46 @@ void Game::processKeyboard(Keyboard::KeyboardInput keyboard) {
     // Might be smart to just store the getPlayerByID(selfID) pointer rather than rerunning it every time
     float playerSpeed = 3;
     if (selfID == -1) return;
+    // Zoom control.
     if (keyboard.isUpScroll()) {
         renderer.zoomOut();             //This whole movement system should probably be reworked
     } else if (keyboard.isDownScroll()) { renderer.zoomIn(); }
+    // Movement
     if (keyboard.getState(keyboard.keybinds.PlayerUp)) {
-        getPlayerByID(selfID)->setVelocityY(-playerSpeed);; // Move up
+        selfPlayer->setVelocityY(-playerSpeed);; // Move up
     } else if (keyboard.getState(keyboard.keybinds.PlayerDown)) {
-        getPlayerByID(selfID)->setVelocityY(playerSpeed);; // Move down
-    } else { getPlayerByID(selfID)->setVelocityY(0); } // No movement
+        selfPlayer->setVelocityY(playerSpeed);; // Move down
+    } else { selfPlayer->setVelocityY(0); } // No movement
     if (keyboard.getState(keyboard.keybinds.PlayerLeft)) {
-        getPlayerByID(selfID)->setVelocityX(-playerSpeed); // Move left
+        selfPlayer->setVelocityX(-playerSpeed); // Move left
     } else if (keyboard.getState(keyboard.keybinds.PlayerRight)) {
-        getPlayerByID(selfID)->setVelocityX(playerSpeed); // Move right
-    } else { getPlayerByID(selfID)->setVelocityX(0); } // No movement
-    if (keyboard.getState(keyboard.keybinds.cameraToPlayer)) {
-        renderer.setCameraPos(getPlayerByID(selfID)->getPosx(), getPlayerByID(selfID)->getPosy());
+        selfPlayer->setVelocityX(playerSpeed); // Move right
+    } else { selfPlayer->setVelocityX(0); } // No movement
+
+    if (keyboard.isSpace()) {
+        lockCameraToPlayer = !lockCameraToPlayer;
     }
+
+    if (keyboard.isLeftClick()){
+        breaking.breaking = true;
+        breaking.x = renderer.pixelToRealX(keyboard.getMouseX())/map.getTileSize();
+        breaking.y = renderer.pixelToRealY(keyboard.getMouseY())/map.getTileSize();
+    }
+    if (keyboard.isLeftClickHeld()){
+        breaking.breaking = true;
+//        std::cout << "Breaking " << breaking.x << "," << breaking.y << "- " << breaking.timer << "- "<< (int) (renderer.pixelToRealX(keyboard.getMouseX())/map.getTileSize() - 1)  << "," << (int) (renderer.pixelToRealY(keyboard.getMouseY())/map.getTileSize() - 1) << "\n";
+        if (breaking.x == (int) (renderer.pixelToRealX(keyboard.getMouseX())/map.getTileSize()) && breaking.y == (int) (renderer.pixelToRealY(keyboard.getMouseY())/map.getTileSize())){
+            breaking.timer++;
+        }else{
+            breaking.x = keyboard.getMouseX()/map.getTileSize();
+            breaking.y = keyboard.getMouseY()/map.getTileSize();
+            breaking.timer = 0;
+        }
+    }else{
+        breaking.breaking = false;
+        breaking.timer = 0;
+    }
+
 }
 
 void Game::gameTick() {
@@ -146,7 +169,24 @@ void Game::gameTick() {
     // Deal with packet buffer.
     playerUpdate();
     processPacketString(); // Take packet from buffer and process them.
-    client.addToSendBuffer("1,"+ std::to_string(getPlayerByID(selfID)->getPosx())+","+std::to_string(getPlayerByID(selfID)->getPosy())+","+std::to_string(getPlayerByID(selfID)->getVelocityX())+","+std::to_string(getPlayerByID(selfID)->getVelocityY())+"\n");
-    //
+    client.addToSendBuffer("1,"+ std::to_string(selfPlayer->getPosx())+","+std::to_string(getPlayerByID(selfID)->getPosy())+","+std::to_string(getPlayerByID(selfID)->getVelocityX())+","+std::to_string(getPlayerByID(selfID)->getVelocityY())+"\n");
+    if (lockCameraToPlayer){
+        renderer.setCameraPos(selfPlayer->getPosx(), selfPlayer->getPosy());
+    }
+    if (breaking.breaking && breaking.timer >= 60){
+        breakTile(breaking.y, breaking.x);
+        breaking.timer = 0;
+    }
 }
+
+void Game::setTile(int row, int col, short value) { map.setValue(row, col, value); }
+void Game::setTiles(const std::vector<int[2]>& tiles, short value) {
+    for (auto& tile : tiles) setTile(tile[0], tile[1], value);
+}
+void Game::breakTile(int row, int col) {map.setValue(row, col, 0);}
+void Game::breakTiles(const std::vector<int[2]> &tiles) {
+    for (auto& tile : tiles) breakTile(tile[0], tile[1]);
+}
+
+
 

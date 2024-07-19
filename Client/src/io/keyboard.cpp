@@ -24,6 +24,12 @@ namespace Keyboard {
         return this->downScroll;
     }
 
+    bool KeyboardInput::isSpace() const {
+        return this->space;
+    }
+
+
+
 
     void KeyboardInput::update() {
         state = SDL_GetKeyboardState(NULL);
@@ -31,8 +37,16 @@ namespace Keyboard {
         rightClick = false;
         upScroll = false;
         downScroll = false;
-
         SDL_Event event;
+        space = false;
+        leftClickHeld = false;
+        if (SDL_GetMouseState(&mouseX, &mouseY)){
+            if(SDL_BUTTON_LMASK){
+                leftClickHeld = true;
+            }
+        }
+
+
 
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) {
@@ -42,6 +56,7 @@ namespace Keyboard {
                 if (event.button.button == SDL_BUTTON_RIGHT) {
                     this->rightClick = (event.type == SDL_MOUSEBUTTONDOWN);
                 }
+
             }else if(event.type == SDL_MOUSEWHEEL){
                 if(event.wheel.y > 0) // scroll up
                 {
@@ -51,11 +66,33 @@ namespace Keyboard {
                 {
                     downScroll = true;
                 }
+            }else if( event.type == SDL_KEYDOWN )
+            {
+                //Select surfaces based on key press
+                switch( event.key.keysym.sym )
+                {
+                    case SDLK_SPACE:
+                        space = true;
+                        break;
+                    default:
+                        break;
+                }
             }else if (event.type == SDL_QUIT) {
-                closing = true;
+                    closing = true;
             }
         }
+
     }
 
+    int KeyboardInput::getMouseX() const {
+        return mouseX;
+    }
 
+    int KeyboardInput::getMouseY() const {
+        return mouseY;
+    }
+
+    bool KeyboardInput::isLeftClickHeld() const {
+        return leftClickHeld;
+    }
 }
