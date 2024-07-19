@@ -11,7 +11,7 @@ extern bool debugOutput;
 extern bool closing;
 
 Game::Game() {
-    map = Map(100, 200);
+    map = Map(140, 280);
     textures = LoadTextures(renderer.renderer); // Loads textures from textures folder
     renderer.textures = &textures; // Janky as balls :).
 //    addPlayerByID(selfID, Player{1, 0, 0, textures.player1, "uwuslayer123"}); // Debug players.
@@ -82,9 +82,13 @@ void Game::processPacketLine(const std::string &packetLine) {
 //            getPlayerByID(uuid)->setVelocity(vx, vy);
             break;
         }
-        case 5: {                                                                // PLAYERMESSAGE: 5, UUID, message
+        case 5: {                                                               // PLAYERMESSAGE: 5, UUID, message
             int uuid = std::stoi(values[1]);
             std::cout << getPlayerByID(uuid)->getUsername() << ": " << values[2] << std::endl;
+            break;
+        }
+        case 6: {                                                               // PLAYERDISSCONECT: 6, UUID
+            removePlayerByID(std::stoi(values[1]));
             break;
         }
         default: {

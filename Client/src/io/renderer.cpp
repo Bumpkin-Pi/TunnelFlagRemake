@@ -86,12 +86,15 @@ namespace Renderer {
         SDL_Rect destRect = { 0, 0, static_cast<int>(gridSize*camera.z +0.5), static_cast<int>(gridSize*camera.z +0.5) }; // Rect to draw all tiles (is just shuffled around each point and redrawn).
         // Iterate through the grid
         for (size_t row = 0; row < map.getMap().size() - 1; ++row) {
+//            if (realToPixelX((row+1)*gridSize) > screenWidth) continue;
             for (size_t col = 0; col < map.getMap()[row].size() - 1; ++col) {
+//                if (realToPixelY(col+1*gridSize) > screenHeight) continue;
+
                 // Get the value of each corner
-                short topLeft = map.getMap()[row][col];
-                short topRight = map.getMap()[row][col + 1];
-                short bottomLeft = map.getMap()[row + 1][col];
-                short bottomRight = map.getMap()[row + 1][col + 1];
+                short topLeft = map.getValue(row, col);
+                short topRight = map.getValue(row,col+1);
+                short bottomLeft = map.getValue(row+1,col);
+                short bottomRight = map.getValue(row+1,col+1);
 
                 destRect.x = realToPixelX(col*gridSize);
                 destRect.y = realToPixelY(row*gridSize);

@@ -41,7 +41,7 @@ void clientListenThreadFunction(){
     game.client.listener(); // Sit listening for packets from server.
 }
 void clientSenderThreadFunction(){
-    constexpr int targetSendTime = 1000 / 30; // 30 frames per second
+    constexpr int targetSendTime = 1000 / 30; // 30 packets per second
     auto lastSendTime = std::chrono::high_resolution_clock::now();
     while (!closing) {
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -83,8 +83,8 @@ int main(int argc, char* argv[]) {
         game.renderer.render(game.map);
     }
     physicsThread.join();
-//    std::terminate();
     clientSenderThread.join();
+    std::terminate();
     clientListenThread.join();
     return 0;
 }

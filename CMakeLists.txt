@@ -15,6 +15,7 @@ else()
     set(SDL2_IMAGE_LIBRARIES "/lib/libSDL2_image.so") # I dont know why cmake is incapable of finding SDL2_image on its own, but at this point I'm too fed up to bother trying to find out.
     set(SDL2_NET_LIBRARIES "/lib/libSDL2_net.so")
 endif()
-
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 add_subdirectory(Client)
 add_subdirectory(Server)
